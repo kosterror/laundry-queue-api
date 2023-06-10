@@ -6,3 +6,14 @@ services:
     container_name: backend
     ports:
       - '8080:8080'
+    depends_on:
+      - database
+  database:
+    container_name: laundry-queue-db
+    image: postgres:alpine
+    ports:
+      - '5431:5432'
+    environment:
+      - POSTGRES_DB=laundry-queue
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
