@@ -1,1 +1,9 @@
+server:
+  port: 8080
 
+spring:
+  datasource:
+    url: jdbc:postgresql://database:5432/laundry-queue
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
