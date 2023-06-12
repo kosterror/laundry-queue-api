@@ -2,20 +2,31 @@ package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "person")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Person extends BaseEntity {
+public class Person {
+
+    @Id
+    @UuidGenerator
+    private UUID id;
 
     private String studentNumber;
+
+    private String email;
+
+    private String password;
 
     private String name;
 
@@ -23,19 +34,15 @@ public class Person extends BaseEntity {
 
     private String room;
 
-    private BigDecimal moneyCount;
+    private BigDecimal money;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @Enumerated(value = EnumType.STRING)
+    private AccountStatus status;
+
+    @OneToOne(mappedBy = "person")
     private QueueSlot queueSlot;
-
-    @ManyToOne
-    @JoinColumn(name = "dormitory_id")
-    private Dormitory homeDormitory;
-
-    @OneToMany
-    private List<Machine> machines;
 
 }

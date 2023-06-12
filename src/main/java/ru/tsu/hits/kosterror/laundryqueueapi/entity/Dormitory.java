@@ -1,27 +1,32 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "dormitory")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Dormitory extends BaseEntity {
+public class Dormitory {
 
-    private String name;
+    @Id
+    @UuidGenerator
+    private UUID id;
 
-    private String address;
+    private Integer number;
 
-    @OneToMany(mappedBy = "homeDormitory")
-    private List<Person> students;
+    @OneToOne
+    @JoinColumn(name = "director_id")
+    private Person director;
 
-    @OneToMany(mappedBy = "locationDormitory")
+    @OneToMany(mappedBy = "location")
     private List<Machine> machines;
 
 }

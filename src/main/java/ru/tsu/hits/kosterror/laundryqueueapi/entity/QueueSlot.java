@@ -1,24 +1,29 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Entity
+@Table(name = "queue_slot")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class QueueSlot extends BaseEntity {
+public class QueueSlot {
+
+    @Id
+    @UuidGenerator
+    private UUID id;
+
+    private Integer number;
 
     @ManyToOne
     @JoinColumn(name = "machine_id")
     private Machine machine;
-
-    private Integer number;
 
     @OneToOne
     @JoinColumn(name = "person_id")
