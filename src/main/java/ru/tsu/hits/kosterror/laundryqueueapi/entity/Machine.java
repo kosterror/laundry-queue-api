@@ -2,27 +2,28 @@ package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "machine")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Machine extends BaseEntity {
+public class Machine {
 
-    @ManyToOne
-    @JoinColumn(name = "dormitory_id")
-    private Dormitory locationDormitory;
+    @Id
+    @UuidGenerator
+    private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Person owner;
+    private LocalDateTime startTime;
 
     @Enumerated(value = EnumType.STRING)
     private MachineType type;
@@ -30,9 +31,11 @@ public class Machine extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private MachineStatus status;
 
-    private LocalDateTime startTime;
+    @OneToMany(mappedBy = "machine")
+    private List<QueueSlot> queueSlots;
 
-    @OneToMany
-    private List<QueueSlot> queue;
+    @ManyToOne
+    @JoinColumn(name = "dormitory_id")
+    private Dormitory location;
 
 }
