@@ -17,3 +17,11 @@ spring:
   flyway:
     locations: classpath:migration
     enabled: true
+  mail:
+    host: host
+    username: username
+    password: password
+    port: 0
+    protocol: protocol
+mail:
+  debug: true
