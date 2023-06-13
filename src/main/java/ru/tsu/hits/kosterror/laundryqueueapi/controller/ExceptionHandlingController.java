@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiError;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
+import ru.tsu.hits.kosterror.laundryqueueapi.exception.AbstractCustomException;
 
 @ControllerAdvice
 @Slf4j
@@ -14,8 +15,19 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(HttpServletRequest request, Exception exception) {
-        logError(request, exception);
+        logError(request, exception, 0);
         ApiResponse<Void> response = buildApiResponse(0, "Непредвиденная внутренняя ошибка сервера");
+        return ResponseEntity.ok(response);
+    }
+
+    @ExceptionHandler(AbstractCustomException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAbstractCustomException(HttpServletRequest request,
+                                                                           AbstractCustomException exception) {
+        logError(request, exception, exception.getCode());
+        ApiResponse<Void> response = buildApiResponse(
+                exception.getCode(),
+                exception.getMessage()
+        );
         return ResponseEntity.ok(response);
     }
 
@@ -25,8 +37,11 @@ public class ExceptionHandlingController {
         return apiResponse;
     }
 
-    private void logError(HttpServletRequest request, Exception exception) {
-        log.error("Возникла ошибка при запросе: {} {}", request.getMethod(), request.getRequestURL());
+    private void logError(HttpServletRequest request, Exception exception, int code) {
+        log.error("Возникла ошибка при запросе: {} {}. Код ошибки: {}",
+                request.getMethod(),
+                request.getRequestURL(),
+                code);
         log.error(exception.getMessage(), exception);
     }
 
