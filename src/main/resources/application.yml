@@ -1,1 +1,36 @@
+server:
+  port: 8080
 
+spring:
+  datasource:
+    url: jdbc:postgresql://database:5432/laundry-queue
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    locations: classpath:migration
+    enabled: true
+  mail:
+    host: host
+    username: username
+    password: password
+    port: 0
+    protocol: protocol
+mail:
+  debug: true
+security:
+  secret-key: secret-key-secret-key-secret-key-secret-key
+  access-lifetime: 30
+  permit-all:
+    endpoints:
+      - pattern: /api/login
+        method: POST
+      - pattern: /api/unsecured
+        method: GET
