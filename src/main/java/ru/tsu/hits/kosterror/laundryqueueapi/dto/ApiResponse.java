@@ -15,4 +15,12 @@ public class ApiResponse<T> {
 
     private T content;
 
+    public ApiResponse(ApiError error) {
+        this.error = error;
+    }
+
+    public ApiResponse(T content) {
+        this.content = content;
+    }
+
 }

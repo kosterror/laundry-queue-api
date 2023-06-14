@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
@@ -22,6 +23,7 @@ public class ManageAccountServiceImpl implements ManageAccountService {
     private final JavaMailSender mailSender;
     private final PasswordGenerator passwordGenerator;
     private final PersonRepository personRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.mail.username}")
     private String username;
@@ -39,11 +41,10 @@ public class ManageAccountServiceImpl implements ManageAccountService {
     }
 
     private void buildAndSaveStudent(String email, String password) {
-        //TODO: добавить хэширование пароля
         Person student = Person
                 .builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .name("")
                 .surname("")
                 .money(BigDecimal.ZERO)

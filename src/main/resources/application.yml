@@ -25,3 +25,12 @@ spring:
     protocol: protocol
 mail:
   debug: true
+security:
+  secret-key: secret-key-secret-key-secret-key-secret-key
+  access-lifetime: 30
+  permit-all:
+    endpoints:
+      - pattern: /api/login
+        method: POST
+      - pattern: /api/unsecured
+        method: GET
