@@ -1,11 +1,11 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -19,7 +19,11 @@ import java.util.UUID;
 public class Person {
 
     @Id
-    @UuidGenerator
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     private String studentNumber;

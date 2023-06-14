@@ -1,11 +1,11 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineType;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +20,11 @@ import java.util.UUID;
 public class Machine {
 
     @Id
-    @UuidGenerator
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     private LocalDateTime startTime;

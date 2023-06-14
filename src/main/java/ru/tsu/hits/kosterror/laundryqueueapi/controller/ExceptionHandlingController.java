@@ -1,6 +1,5 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiError;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.AbstractCustomException;
+
+import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 @Slf4j
