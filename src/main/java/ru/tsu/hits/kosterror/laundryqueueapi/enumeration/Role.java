@@ -1,7 +1,7 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.enumeration;
 
 public enum Role {
-    STUDENT,
-    EMPLOYEE,
-    ADMIN
+    ROLE_STUDENT,
+    ROLE_EMPLOYEE,
+    ROLE_ADMIN
 }
