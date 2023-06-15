@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.auth.AuthService;
@@ -29,6 +30,19 @@ public class AuthController {
     }
 
     @Operation(
+            summary = "Выйти",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @PostMapping("/logout")
+    public ApiResponse<StringObject> logout(@RequestBody StringObject refreshToken,
+                                            Authentication authentication) {
+        return authService.logout(
+                ((PersonData) authentication.getPrincipal()).getId(),
+                refreshToken
+        );
+    }
+
+    @Operation(
             summary = "Защищенный эндпоинт",
             security = @SecurityRequirement(name = "bearerAuth")
     )
@@ -38,6 +52,9 @@ public class AuthController {
         return "Привет, пользователь с email: " + email;
     }
 
+    @Operation(
+            summary = "Незащищенный эндпоинт"
+    )
     @GetMapping("/unsecured")
     public String unsecuredMethod() {
         return "Это незащищенный эндпоинт";
