@@ -26,8 +26,10 @@ spring:
 mail:
   debug: true
 security:
-  secret-key: secret-key-secret-key-secret-key-secret-key
-  access-lifetime: 30
+  access-secret-key: access-secret-key-access-secret-key-access-secret-key
+  refresh-secret-key: refresh-secret-key-refresh-secret-key-refresh-secret-key-
+  access-lifetime-min: 30
+  refresh-lifetime-days: 30
   permit-all:
     endpoints:
       - pattern: /api/login

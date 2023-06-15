@@ -13,7 +13,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.UnauthorizedException;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 
-import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
@@ -29,25 +28,23 @@ public class JwtServiceImpl implements JwtService {
     private static final String CLAIM_ID = "id";
     private static final String CLAIM_EMAIL = "email";
     private static final String CLAIM_ROLE = "role";
+    @Value("${security.access-secret-key}")
+    private String accessSecret;
 
-    private Key key;
+    @Value("${security.refresh-secret-key}")
+    private String refreshSecret;
 
-    @Value("${security.secret-key}")
-    private String secretKey;
-
-    @Value("${security.access-lifetime}")
+    @Value("${security.access-lifetime-min}")
     private int accessTokenLifetime;
 
-    @PostConstruct
-    private void init() {
-        key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
+    @Value("${security.refresh-lifetime-days}")
+    private int refreshTokenLifetime;
 
     @Override
-    public String generateToken(@NonNull UUID id,
-                                @NonNull String email,
-                                @NonNull String role) {
-        Date issuedAt = Date.from(Instant.now());
+    public String generateAccessToken(@NonNull UUID id,
+                                      @NonNull String email,
+                                      @NonNull String role) {
+        Key key = Keys.hmacShaKeyFor(accessSecret.getBytes(StandardCharsets.UTF_8));
         Date expiresAt = Date.from(
                 Instant.now()
                         .plus(
@@ -55,6 +52,32 @@ public class JwtServiceImpl implements JwtService {
                                 ChronoUnit.MINUTES
                         )
         );
+
+        return generateToken(id, email, role, expiresAt, key);
+    }
+
+    @Override
+    public String generateRefreshToken(@NonNull UUID id,
+                                       @NonNull String email,
+                                       @NonNull String role) {
+        Key key = Keys.hmacShaKeyFor(refreshSecret.getBytes(StandardCharsets.UTF_8));
+        Date expiresAt = Date.from(
+                Instant.now()
+                        .plus(
+                                refreshTokenLifetime,
+                                ChronoUnit.DAYS
+                        )
+        );
+
+        return generateToken(id, email, role, expiresAt, key);
+    }
+
+    private String generateToken(UUID id,
+                                 String email,
+                                 String role,
+                                 Date expiresAt,
+                                 Key key) {
+        Date issuedAt = Date.from(Instant.now());
 
         return Jwts
                 .builder()
@@ -70,8 +93,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public PersonData decodeToken(@NonNull String token) {
+    public PersonData decodeAccessToken(@NonNull String token) {
         try {
+            Key key = Keys.hmacShaKeyFor(accessSecret.getBytes(StandardCharsets.UTF_8));
             Jws<Claims> data = Jwts
                     .parserBuilder()
                     .setSigningKey(key)

@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorizationValue = request.getHeader(AUTHORIZATION_HEADER);
         try {
             String token = authorizationValue.substring(7);
-            PersonData personData = jwtService.decodeToken(token);
+            PersonData personData = jwtService.decodeAccessToken(token);
             Authentication authentication = new JwtAuthentication(personData);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception exception) {
