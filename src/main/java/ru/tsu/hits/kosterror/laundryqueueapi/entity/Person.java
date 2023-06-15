@@ -7,6 +7,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -48,5 +49,8 @@ public class Person {
 
     @OneToOne(mappedBy = "person")
     private QueueSlot queueSlot;
+
+    @OneToMany(mappedBy = "owner")
+    private List<RefreshToken> refreshTokens;
 
 }
