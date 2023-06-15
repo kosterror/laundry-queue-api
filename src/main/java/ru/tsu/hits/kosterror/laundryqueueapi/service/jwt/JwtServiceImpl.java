@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -57,9 +58,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(@NonNull UUID id,
-                                       @NonNull String email,
-                                       @NonNull String role) {
+    public Pair<String, Date> generateRefreshTokenAndExpiresDate(@NonNull UUID id,
+                                                                 @NonNull String email,
+                                                                 @NonNull String role) {
         Key key = Keys.hmacShaKeyFor(refreshSecret.getBytes(StandardCharsets.UTF_8));
         Date expiresAt = Date.from(
                 Instant.now()
@@ -69,7 +70,7 @@ public class JwtServiceImpl implements JwtService {
                         )
         );
 
-        return generateToken(id, email, role, expiresAt, key);
+        return Pair.of(generateToken(id, email, role, expiresAt, key), expiresAt);
     }
 
     private String generateToken(UUID id,
