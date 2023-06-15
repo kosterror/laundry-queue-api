@@ -34,3 +34,6 @@ security:
         method: POST
       - pattern: /api/unsecured
         method: GET
+
+application:
+  queue-size: 5
