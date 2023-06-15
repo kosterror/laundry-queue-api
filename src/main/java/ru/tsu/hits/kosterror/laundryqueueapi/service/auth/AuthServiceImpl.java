@@ -7,11 +7,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
+import ru.tsu.hits.kosterror.laundryqueueapi.entity.RefreshToken;
+import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
+import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.UnauthorizedException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.repository.RefreshTokenRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.jwt.JwtService;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -21,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public ApiResponse<TokenDto> login(@NonNull PersonCredentials credentials) {
@@ -32,14 +41,48 @@ public class AuthServiceImpl implements AuthService {
             throw new UnauthorizedException(2, "Не авторизован");
         }
 
-
-        String accessToken = jwtService.generateToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
-
-        //TODO: добавить refresh токен
+        String accessToken = jwtService.generateAccessToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
 
         return new ApiResponse<>(new TokenDto(
                 accessToken,
-                null
+                generateAndSaveRefreshToken(person)
         ));
     }
+
+    @Override
+    public ApiResponse<StringObject> logout(UUID id, StringObject inputRefreshToken) {
+        Person owner = personRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(3, "Такой пользователь не найден"));
+
+        RefreshToken refreshToken = refreshTokenRepository
+                .findByOwnerAndToken(owner, inputRefreshToken.getValue())
+                .orElseThrow(() -> new NotFoundException(4, "Такой рефреш токен не найден"));
+
+        refreshTokenRepository.delete(refreshToken);
+
+        if (refreshToken.getExpiredAt().before(new Date())) {
+            throw new BadRequestException(5, "Срок действия рефреш токена истёк");
+        } else {
+            return new ApiResponse<>(new StringObject("Успешный выход"));
+        }
+    }
+
+    private String generateAndSaveRefreshToken(Person person) {
+        var refreshTokenAndExpiresDate = jwtService.generateRefreshTokenAndExpiresDate(person.getId(),
+                person.getEmail(),
+                person.getRole().toString()
+        );
+
+        RefreshToken refreshTokenEntity = RefreshToken
+                .builder()
+                .expiredAt(refreshTokenAndExpiresDate.getRight())
+                .token(refreshTokenAndExpiresDate.getLeft())
+                .owner(person)
+                .build();
+
+        refreshTokenEntity = refreshTokenRepository.save(refreshTokenEntity);
+        return refreshTokenEntity.getToken();
+    }
+
 }

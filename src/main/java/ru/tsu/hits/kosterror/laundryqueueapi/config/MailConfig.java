@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import javax.annotation.PostConstruct;
 import java.util.Properties;
 
 @Configuration
@@ -33,12 +32,6 @@ public class MailConfig {
 
     @Value("${mail.debug}")
     private String debug;
-
-    @PostConstruct
-    private void init() {
-        log.info("создал: {}", this);
-    }
-
 
     @Bean
     public JavaMailSender javaMailSender() {
