@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
@@ -36,19 +37,23 @@ public class ManageAccountServiceImpl implements ManageAccountService {
     @Override
     @Transactional
     public ApiResponse<StringObject> createStudent(String email) {
-        if (personRepository.existsByEmail(email)) {
-            throw new EmailAlreadyUsedException(1, "Пользователь с такой почтой уже существует");
-        }
-
-        if (!email.matches(EMAIL_REGEX)) {
-            throw new BadRequestException(6, "Почта не соответствует нужному формату");
-        }
-
+        validateEmail(email);
         String password = passwordGenerator.generatePassword();
         buildAndSaveStudent(email, password);
         sendMessage(email, password);
 
         return new ApiResponse<>(new StringObject("Студент успешно добавлен"));
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse<StringObject> createEmployee(CreateEmployeeDto dto) {
+        validateEmail(dto.getEmail());
+        String password = passwordGenerator.generatePassword();
+        buildAndSaveEmployee(dto, password);
+        sendMessage(dto.getEmail(), password);
+
+        return new ApiResponse<>(new StringObject("Аккаунт сотрудника успешно создан"));
     }
 
     private void buildAndSaveStudent(String email, String password) {
@@ -66,6 +71,21 @@ public class ManageAccountServiceImpl implements ManageAccountService {
         personRepository.save(student);
     }
 
+    private void buildAndSaveEmployee(CreateEmployeeDto dto, String password) {
+        Person employee = Person
+                .builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(password))
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .money(BigDecimal.ZERO)
+                .status(AccountStatus.ACTIVATED)
+                .role(Role.ROLE_EMPLOYEE)
+                .build();
+
+        personRepository.save(employee);
+    }
+
     private void sendMessage(String email, String password) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);
@@ -75,6 +95,16 @@ public class ManageAccountServiceImpl implements ManageAccountService {
                 "использовать почту, на которую пришло данное письмо и пароль: " + password);
 
         mailSender.send(mailMessage);
+    }
+
+    private void validateEmail(String email) {
+        if (personRepository.existsByEmail(email)) {
+            throw new EmailAlreadyUsedException(1, "Пользователь с такой почтой уже существует");
+        }
+
+        if (!email.matches(EMAIL_REGEX)) {
+            throw new BadRequestException(6, "Почта не соответствует нужному формату");
+        }
     }
 
 }
