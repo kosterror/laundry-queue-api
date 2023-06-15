@@ -9,8 +9,10 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
+import ru.tsu.hits.kosterror.laundryqueueapi.entity.RefreshToken;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.UnauthorizedException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.repository.RefreshTokenRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.jwt.JwtService;
 
 @Slf4j
@@ -21,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public ApiResponse<TokenDto> login(@NonNull PersonCredentials credentials) {
@@ -32,14 +35,29 @@ public class AuthServiceImpl implements AuthService {
             throw new UnauthorizedException(2, "Не авторизован");
         }
 
-
-        String accessToken = jwtService.generateToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
-
-        //TODO: добавить refresh токен
+        String accessToken = jwtService.generateAccessToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
 
         return new ApiResponse<>(new TokenDto(
                 accessToken,
-                null
+                generateAndSaveRefreshToken(person)
         ));
     }
+
+    private String generateAndSaveRefreshToken(Person person) {
+        var refreshTokenAndExpiresDate = jwtService.generateRefreshTokenAndExpiresDate(person.getId(),
+                person.getEmail(),
+                person.getRole().toString()
+        );
+
+        RefreshToken refreshTokenEntity = RefreshToken
+                .builder()
+                .expiredAt(refreshTokenAndExpiresDate.getRight())
+                .token(refreshTokenAndExpiresDate.getLeft())
+                .owner(person)
+                .build();
+
+        refreshTokenEntity = refreshTokenRepository.save(refreshTokenEntity);
+        return refreshTokenEntity.getToken();
+    }
+
 }

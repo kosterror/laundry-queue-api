@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +24,7 @@ public class RefreshToken {
     )
     private UUID id;
 
-    private LocalDateTime expiredAt;
+    private Date expiredAt;
 
     private String token;
 
