@@ -7,14 +7,19 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
+import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.EmailAlreadyUsedException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.passwordgenerator.PasswordGenerator;
 
 import java.math.BigDecimal;
+
+import static ru.tsu.hits.kosterror.laundryqueueapi.util.ValidationConstants.EMAIL_REGEX;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +35,20 @@ public class ManageAccountServiceImpl implements ManageAccountService {
 
     @Override
     @Transactional
-    public void createStudent(String email) {
+    public ApiResponse<StringObject> createStudent(String email) {
         if (personRepository.existsByEmail(email)) {
             throw new EmailAlreadyUsedException(1, "Пользователь с такой почтой уже существует");
+        }
+
+        if (!email.matches(EMAIL_REGEX)) {
+            throw new BadRequestException(6, "Почта не соответствует нужному формату");
         }
 
         String password = passwordGenerator.generatePassword();
         buildAndSaveStudent(email, password);
         sendMessage(email, password);
+
+        return new ApiResponse<>(new StringObject("Студент успешно добавлен"));
     }
 
     private void buildAndSaveStudent(String email, String password) {
@@ -49,7 +60,7 @@ public class ManageAccountServiceImpl implements ManageAccountService {
                 .surname("")
                 .money(BigDecimal.ZERO)
                 .status(AccountStatus.PENDING)
-                .role(Role.STUDENT)
+                .role(Role.ROLE_STUDENT)
                 .build();
 
         personRepository.save(student);
