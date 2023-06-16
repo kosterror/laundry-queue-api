@@ -10,6 +10,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StringObject {
-    @NotNull
+    @NotNull(message = "Строка не может быть равна null")
     private String value;
 }

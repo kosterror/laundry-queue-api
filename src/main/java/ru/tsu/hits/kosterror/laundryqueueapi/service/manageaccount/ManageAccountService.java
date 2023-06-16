@@ -1,13 +1,11 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.manageaccount;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 
 public interface ManageAccountService {
 
-    ApiResponse<StringObject> createStudent(String email);
+    void createStudent(String email);
 
-    ApiResponse<StringObject> createEmployee(CreateEmployeeDto dto);
+    void createEmployee(CreateEmployeeDto dto);
 
 }

@@ -1,21 +1,13 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.exception;
 
-public class UnauthorizedException extends AbstractCustomException {
+public class UnauthorizedException extends RuntimeException {
 
-    public UnauthorizedException(int code) {
-        super(code);
+    public UnauthorizedException(String message) {
+        super(message);
     }
 
-    public UnauthorizedException(int code, String message) {
-        super(code, message);
-    }
-
-    public UnauthorizedException(int code, String message, Throwable cause) {
-        super(code, message, cause);
-    }
-
-    public UnauthorizedException(int code, Throwable cause) {
-        super(code, cause);
+    public UnauthorizedException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }
