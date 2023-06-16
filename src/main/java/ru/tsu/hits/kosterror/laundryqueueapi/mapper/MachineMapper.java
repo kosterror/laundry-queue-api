@@ -18,7 +18,7 @@ public class MachineMapper {
                 machine.getType(),
                 machine.getStatus(),
                 machine.getQueueSlots(),
-                machine.getLocation()
+                machine.getLocation().getId()
         );
     }
 
@@ -26,9 +26,9 @@ public class MachineMapper {
         return Machine
                 .builder()
                 .type(machineDto.getType())
+                .status(machineDto.getMachineStatus())
                 .location(dormitory)
                 .build();
-
     }
 
 }
