@@ -1,5 +1,6 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +15,14 @@ import static ru.tsu.hits.kosterror.laundryqueueapi.util.ValidationConstants.EMA
 @AllArgsConstructor
 public class CreateEmployeeDto {
 
-    @NotNull
-    @Pattern(regexp = EMAIL_REGEX)
+    @Schema(example = "email@domain.com")
+    @Pattern(regexp = EMAIL_REGEX, message = "Почта не соответствует формату")
     String email;
 
-    @NotNull
+    @NotNull(message = "Имя не может быть null")
     String name;
 
-    @NotNull
+    @NotNull(message = "Фамилия не может быть null")
     String surname;
 
 }

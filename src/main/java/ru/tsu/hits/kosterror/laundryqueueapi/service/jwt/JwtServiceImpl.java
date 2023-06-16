@@ -111,7 +111,7 @@ public class JwtServiceImpl implements JwtService {
                     Role.valueOf(claims.get(CLAIM_ROLE, String.class))
             );
         } catch (Exception exception) {
-            throw new UnauthorizedException(2, "Не авторизован", exception);
+            throw new UnauthorizedException("Не авторизован", exception);
         }
     }
 

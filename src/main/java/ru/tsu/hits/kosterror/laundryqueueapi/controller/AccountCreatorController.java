@@ -5,9 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.manageaccount.ManageAccountService;
 
 import javax.validation.Valid;
@@ -25,8 +23,8 @@ public class AccountCreatorController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/creator/student/{email}")
-    public ApiResponse<StringObject> createStudent(@PathVariable String email) {
-        return manageAccountService.createStudent(email);
+    public void createStudent(@PathVariable String email) {
+        manageAccountService.createStudent(email);
     }
 
     @Operation(
@@ -34,8 +32,8 @@ public class AccountCreatorController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/creator/employee")
-    public ApiResponse<StringObject> createEmployee(@RequestBody @Valid CreateEmployeeDto dto) {
-        return manageAccountService.createEmployee(dto);
+    public void createEmployee(@RequestBody @Valid CreateEmployeeDto dto) {
+        manageAccountService.createEmployee(dto);
     }
 
 }

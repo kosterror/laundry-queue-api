@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
@@ -32,39 +31,37 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public ApiResponse<TokenDto> login(@NonNull PersonCredentials credentials) {
+    public TokenDto login(@NonNull PersonCredentials credentials) {
         Person person = personRepository
                 .findByEmail(credentials.getEmail())
-                .orElseThrow(() -> new UnauthorizedException(2, "Не авторизован"));
+                .orElseThrow(() -> new UnauthorizedException("Не авторизован"));
 
         if (!passwordEncoder.matches(credentials.getPassword(), person.getPassword())) {
-            throw new UnauthorizedException(2, "Не авторизован");
+            throw new UnauthorizedException("Не авторизован");
         }
 
         String accessToken = jwtService.generateAccessToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
 
-        return new ApiResponse<>(new TokenDto(
+        return new TokenDto(
                 accessToken,
                 generateAndSaveRefreshToken(person)
-        ));
+        );
     }
 
     @Override
-    public ApiResponse<StringObject> logout(UUID id, StringObject inputRefreshToken) {
+    public void logout(UUID id, StringObject inputRefreshToken) {
         Person owner = personRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException(3, "Такой пользователь не найден"));
+                .orElseThrow(() -> new NotFoundException("Такой пользователь не найден"));
 
         RefreshToken refreshToken = refreshTokenRepository
                 .findByOwnerAndToken(owner, inputRefreshToken.getValue())
-                .orElseThrow(() -> new NotFoundException(4, "Такой рефреш токен не найден"));
+                .orElseThrow(() -> new NotFoundException("Такой рефреш токен не найден"));
 
         refreshTokenRepository.delete(refreshToken);
 
         if (refreshToken.getExpiredAt().before(new Date())) {
-            throw new BadRequestException(5, "Срок действия рефреш токена истёк");
-        } else {
-            return new ApiResponse<>(new StringObject("Успешный выход"));
+            throw new BadRequestException("Срок действия рефреш токена истёк");
         }
     }
 

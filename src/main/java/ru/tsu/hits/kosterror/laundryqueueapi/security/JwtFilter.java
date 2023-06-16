@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.tsu.hits.kosterror.laundryqueueapi.config.EndpointsPermitAll;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiError;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.jwt.JwtService;
 
 import javax.servlet.FilterChain;
@@ -69,10 +68,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private void sendError(HttpServletResponse response) throws IOException {
         log.error("Токен отсутствовал или не прошел верификацию");
-        ApiError apiError = new ApiError(2, "Не авторизован");
-        ApiResponse<Void> apiResponse = new ApiResponse<>(apiError);
-
-        String responseBody = objectMapper.writeValueAsString(apiResponse);
+        ApiError apiError = new ApiError(401, "Не авторизован");
+        String responseBody = objectMapper.writeValueAsString(apiError);
 
         response.setStatus(200);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

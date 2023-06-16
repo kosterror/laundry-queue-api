@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
@@ -27,7 +29,7 @@ public class AuthController {
             summary = "Логин"
     )
     @PostMapping("/login")
-    public ApiResponse<TokenDto> login(@RequestBody @Valid PersonCredentials credentials) {
+    public TokenDto login(@RequestBody @Valid PersonCredentials credentials) {
         return authService.login(credentials);
     }
 
@@ -36,31 +38,12 @@ public class AuthController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/logout")
-    public ApiResponse<StringObject> logout(@RequestBody StringObject refreshToken,
-                                            Authentication authentication) {
-        return authService.logout(
+    public void logout(@RequestBody @Valid StringObject refreshToken,
+                       Authentication authentication) {
+        authService.logout(
                 ((PersonData) authentication.getPrincipal()).getId(),
                 refreshToken
         );
     }
-
-    @Operation(
-            summary = "Защищенный эндпоинт",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @GetMapping("/secured")
-    public String securedMethod(Authentication authentication) {
-        String email = ((PersonData) authentication.getPrincipal()).getEmail();
-        return "Привет, пользователь с email: " + email;
-    }
-
-    @Operation(
-            summary = "Незащищенный эндпоинт"
-    )
-    @GetMapping("/unsecured")
-    public String unsecuredMethod() {
-        return "Это незащищенный эндпоинт";
-    }
-
 
 }
