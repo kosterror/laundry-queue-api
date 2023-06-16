@@ -9,7 +9,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.QueueSlot;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
-import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalException;
+import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalServerException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.notification.NotificationService;
@@ -56,10 +56,8 @@ public class UpdateMachineStatus {
         List<QueueSlot> queue = queueSlotRepository.findAllByMachineOrderByNumberAsc(machine);
 
         if (queueSize < 2 || queue.size() != queueSize) {
-            throw new InternalException(
-                    0,
-                    "Размер очереди неправильного размера для стиральной машины: " + machine.getId()
-            );
+            throw new InternalServerException("Размер очереди неправильного размера для " +
+                    "стиральной машины: " + machine.getId());
         }
 
         Person currentPerson = queue.get(0).getPerson();
