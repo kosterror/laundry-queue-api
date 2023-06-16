@@ -28,5 +28,5 @@ public class MachineDto {
 
     private List<QueueSlot> queueSlots;
 
-    private Dormitory location;
+    private UUID location;
 }
