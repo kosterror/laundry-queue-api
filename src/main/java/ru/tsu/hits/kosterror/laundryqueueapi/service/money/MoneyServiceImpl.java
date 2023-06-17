@@ -39,4 +39,27 @@ public class MoneyServiceImpl implements MoneyService {
         return personMapper.entityToDto(person);
     }
 
+    @Override
+    @Transactional
+    public PersonDto decreaseBalance(UUID personId, BigDecimal delta) {
+        if (delta.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Некорректная сумма для вывода средств: " + delta);
+        }
+
+        var person = personRepository
+                .findById(personId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
+        var newBalance = person.getMoney().subtract(delta);
+
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new BadRequestException("Недостаточно средств для вывода");
+        }
+
+        person.setMoney(newBalance);
+        person = personRepository.save(person);
+
+        return personMapper.entityToDto(person);
+    }
+
 }
