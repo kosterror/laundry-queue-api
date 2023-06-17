@@ -17,7 +17,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.service.account.AccountService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/account")
 @RequiredArgsConstructor
 @Tag(name = "Личный кабинет")
 public class AccountController {
@@ -29,7 +29,7 @@ public class AccountController {
             summary = "Получить данные о cебе(студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @GetMapping("/account/student")
+    @GetMapping("/student")
     public StudentDto getStudentInfo(Authentication authentication) {
         PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
         return accountService.getStudentInfo(personData.getId());
@@ -39,7 +39,7 @@ public class AccountController {
             summary = "Получить данные о cебе(админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @GetMapping("/account/admin")
+    @GetMapping("/admin")
     public PersonDto getPersonInfo(Authentication authentication) {
         PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
         return accountService.getPersonInfo(personData.getId());
@@ -50,7 +50,7 @@ public class AccountController {
             summary = "Изменить данные о себe(студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PutMapping("/account/student")
+    @PutMapping("/student")
     public StudentDto changeStudentInfo(Authentication authentication, @Valid @RequestBody UpdateStudentInfo updateStudentInfo) {
         PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
         return accountService.changeStudentInfo(personData.getId(), updateStudentInfo);
