@@ -26,10 +26,6 @@ public class Dormitory {
 
     private Integer number;
 
-    @OneToOne
-    @JoinColumn(name = "director_id")
-    private Person director;
-
     @OneToMany(mappedBy = "location")
     private List<Machine> machines;
 

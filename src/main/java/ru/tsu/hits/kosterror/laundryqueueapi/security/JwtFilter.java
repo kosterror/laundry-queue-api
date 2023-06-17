@@ -71,7 +71,7 @@ public class JwtFilter extends OncePerRequestFilter {
         ApiError apiError = new ApiError(401, "Не авторизован");
         String responseBody = objectMapper.writeValueAsString(apiError);
 
-        response.setStatus(200);
+        response.setStatus(401);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(CHAR_ENCODING);
         response.getWriter().write(responseBody);
