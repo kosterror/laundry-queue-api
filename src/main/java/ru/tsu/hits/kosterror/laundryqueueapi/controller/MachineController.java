@@ -1,16 +1,12 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ChangeMachineStatusDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.MachineDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.CheckRoleService;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine.MachineService;
 
 import javax.validation.Valid;
@@ -23,8 +19,6 @@ import java.util.UUID;
 public class MachineController {
 
     private final MachineService machineService;
-    private final CheckRoleService checkRoleService;
-    private final ObjectMapper objectMapper;
 
     @Operation(
             summary = "Получить данные о машинах в общежитии.",
@@ -41,9 +35,7 @@ public class MachineController {
     )
     @PostMapping("/machine")
     public MachineDto createNewMachine(
-            Authentication authentication,
             @Valid @RequestBody CreateNewMachineDto createNewMachineDto) {
-        checkRoleService.checkAdminRole(objectMapper.convertValue(authentication.getPrincipal(), PersonData.class));
         return machineService.createNewMachine(createNewMachineDto);
     }
 
@@ -53,9 +45,7 @@ public class MachineController {
     )
     @PatchMapping("/machine")
     public MachineDto changeMachineStatus(
-            Authentication authentication,
             @Valid @RequestBody ChangeMachineStatusDto changeMachineStatusDto) {
-        checkRoleService.checkAdminRole(objectMapper.convertValue(authentication.getPrincipal(), PersonData.class));
         return machineService.changeMachineStatus(changeMachineStatusDto);
     }
 
@@ -64,8 +54,7 @@ public class MachineController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @DeleteMapping("/machine/{machineId}")
-    public void deleteMachine(Authentication authentication, @PathVariable UUID machineId) {
-        checkRoleService.checkAdminRole(objectMapper.convertValue(authentication.getPrincipal(), PersonData.class));
+    public void deleteMachine( @PathVariable UUID machineId) {
         machineService.deleteMachine(machineId);
     }
 
