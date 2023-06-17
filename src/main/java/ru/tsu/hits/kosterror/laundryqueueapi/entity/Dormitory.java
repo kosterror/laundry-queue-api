@@ -29,4 +29,7 @@ public class Dormitory {
     @OneToMany(mappedBy = "location")
     private List<Machine> machines;
 
+    @OneToMany(mappedBy = "dormitory")
+    private List<Person> person;
+
 }
