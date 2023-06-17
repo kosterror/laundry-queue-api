@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.service;
+package ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine;
 
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ChangeMachineStatusDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;

@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.service;
+package ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DormitoryServiceImpl implements DormitoryService{
+public class DormitoryServiceImpl implements DormitoryService {
 
     private final DormitoryRepository dormitoryRepository;
 

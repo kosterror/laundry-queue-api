@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.service;
+package ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,6 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public void deleteMachine(UUID machineId){
-
         machineRepository.deleteById(machineId);
     }
 

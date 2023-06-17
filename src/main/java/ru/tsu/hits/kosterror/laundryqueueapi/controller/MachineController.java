@@ -11,7 +11,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.MachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.CheckRoleService;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.MachineService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine.MachineService;
 
 import javax.validation.Valid;
 import java.util.List;
