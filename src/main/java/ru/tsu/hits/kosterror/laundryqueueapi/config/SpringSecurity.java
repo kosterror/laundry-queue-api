@@ -31,6 +31,7 @@ public class SpringSecurity {
                 .antMatchers("/api/creator/student/**", "POST").hasAnyRole("ADMIN", "EMPLOYEE")
                 .antMatchers("/api/creator/employee/**", "POST").hasRole("ADMIN")
                 .antMatchers("/api/secured", "GET").authenticated()
+                .antMatchers("/api/money/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
