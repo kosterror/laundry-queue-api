@@ -12,7 +12,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.PersonMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.StudentMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine.DormitoryService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
 
 import java.util.UUID;
 
