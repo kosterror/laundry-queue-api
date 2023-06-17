@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://database:5432/laundry-queue
-    username: postgres
-    password: postgres
+    url: ${DATASOURCE}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,16 +18,16 @@ spring:
     locations: classpath:migration
     enabled: true
   mail:
-    host: host
-    username: username
-    password: password
-    port: 0
-    protocol: protocol
+    host: ${MAIL_HOST}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    port: ${MAIL_PORT}
+    protocol: ${MAIL_PROTOCOL}
 mail:
-  debug: true
+  debug: ${MAIL_DEBUG}
 security:
-  access-secret-key: access-secret-key-access-secret-key-access-secret-key
-  refresh-secret-key: refresh-secret-key-refresh-secret-key-refresh-secret-key-
+  access-secret-key: ${ACCESS_TOKEN_KEY}
+  refresh-secret-key: ${REFRESH_TOKEN_KEY}
   access-lifetime-min: 30
   refresh-lifetime-days: 30
   permit-all:

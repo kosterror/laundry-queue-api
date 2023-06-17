@@ -8,6 +8,8 @@ services:
       - '8080:8080'
     depends_on:
       - database
+    env_file:
+      - .env
   database:
     container_name: laundry-queue-db
     image: postgres:alpine
