@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface AccountService {
 
+    StudentDto getStudentInfo(UUID id);
     PersonDto getPersonInfo(UUID id);
 
     PersonDto changeAdminInfo(UUID id, UpdateAdminInfo updateAdminInfo);

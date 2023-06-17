@@ -14,6 +14,8 @@ public class StudentDto {
 
     private UUID id;
 
+    private UUID dormitoryId;
+
     private String studentNumber;
 
     private String email;

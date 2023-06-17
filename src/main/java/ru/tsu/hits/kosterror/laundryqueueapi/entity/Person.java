@@ -53,4 +53,8 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     private List<RefreshToken> refreshTokens;
 
+    @ManyToOne
+    @JoinColumn(name = "dormitory_id")
+    private Dormitory dormitory;
+
 }

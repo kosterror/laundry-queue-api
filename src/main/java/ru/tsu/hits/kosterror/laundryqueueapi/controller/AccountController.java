@@ -26,14 +26,25 @@ public class AccountController {
     private final ObjectMapper objectMapper;
 
     @Operation(
-            summary = "Получить данные о cебе.",
+            summary = "Получить данные о cебе(студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @GetMapping("/account")
+    @GetMapping("/account/student")
+    public StudentDto getStudentInfo(Authentication authentication) {
+        PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
+        return accountService.getStudentInfo(personData.getId());
+    }
+
+    @Operation(
+            summary = "Получить данные о cебе(админ/сотрудник).",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @GetMapping("/account/admin")
     public PersonDto getPersonInfo(Authentication authentication) {
         PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
         return accountService.getPersonInfo(personData.getId());
     }
+
 
     @Operation(
             summary = "Изменить данные о себe(студент).",

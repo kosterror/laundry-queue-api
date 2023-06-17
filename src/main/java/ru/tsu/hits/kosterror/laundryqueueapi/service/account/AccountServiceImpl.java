@@ -10,7 +10,9 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.PersonMapper;
+import ru.tsu.hits.kosterror.laundryqueueapi.mapper.StudentMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine.DormitoryService;
 
 import java.util.UUID;
 
@@ -21,10 +23,17 @@ public class AccountServiceImpl implements AccountService{
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final StudentMapper studentMapper;
+    private final DormitoryService dormitoryService;
 
     @Override
-    public PersonDto getPersonInfo(UUID id){
+    public StudentDto getStudentInfo(UUID id){
 
+        return studentMapper.entityToStudentDto(findPerson(id));
+    }
+
+    @Override
+    public PersonDto getPersonInfo(UUID id) {
         return personMapper.entityToDto(findPerson(id));
     }
 
@@ -49,9 +58,10 @@ public class AccountServiceImpl implements AccountService{
         person.setSurname(updateStudentInfo.getSurname());
         person.setRoom(updateStudentInfo.getRoom());
         person.setStudentNumber(updateStudentInfo.getStudentNumber());
+        person.setDormitory(dormitoryService.findDormitory(updateStudentInfo.getDormitoryId()));
 
         personRepository.save(person);
-        return personMapper.entityToStudentDto(person);
+        return studentMapper.entityToStudentDto(person);
     }
 
     private Person findPerson(UUID id){
