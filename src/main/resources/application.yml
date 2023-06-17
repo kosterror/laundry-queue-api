@@ -38,4 +38,6 @@ security:
         method: GET
 
 application:
+  name: laundry-queue-api
   queue-size: 5
+  firebase-configuration-file: firebase-config.json
