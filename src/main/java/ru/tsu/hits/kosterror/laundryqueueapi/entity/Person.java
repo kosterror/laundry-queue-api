@@ -41,6 +41,8 @@ public class Person {
 
     private BigDecimal money;
 
+    private String deviceToken;
+
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
