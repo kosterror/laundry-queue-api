@@ -10,6 +10,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.MachineMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
