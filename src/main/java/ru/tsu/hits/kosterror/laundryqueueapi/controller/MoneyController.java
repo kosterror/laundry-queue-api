@@ -35,4 +35,18 @@ public class MoneyController {
                 );
     }
 
+    @Operation(
+            summary = "Вывести деньги",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @PostMapping("/decrease")
+    public PersonDto decreaseBalance(@RequestParam BigDecimal delta,
+                                     Authentication auth) {
+        return moneyService
+                .decreaseBalance(
+                        ((PersonData) auth.getPrincipal()).getId(),
+                        delta
+                );
+    }
+
 }

@@ -9,4 +9,7 @@ import java.util.UUID;
 public interface MoneyService {
     @Transactional
     PersonDto increaseBalance(UUID personId, BigDecimal delta);
+
+    @Transactional
+    PersonDto decreaseBalance(UUID personId, BigDecimal delta);
 }
