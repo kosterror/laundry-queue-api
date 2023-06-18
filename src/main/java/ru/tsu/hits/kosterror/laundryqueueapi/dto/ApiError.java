@@ -1,5 +1,6 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ApiError {
 
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss:SSS")
     private LocalDateTime timestamp;
 
     private int code;
