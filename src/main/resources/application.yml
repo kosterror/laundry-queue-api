@@ -22,9 +22,13 @@ spring:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     port: ${MAIL_PORT}
-    protocol: ${MAIL_PROTOCOL}
-mail:
-  debug: ${MAIL_DEBUG}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: ${MAIL_START_TLS}
+          auth: ${MAIL_AUTH}
+
 security:
   access-secret-key: ${ACCESS_TOKEN_KEY}
   refresh-secret-key: ${REFRESH_TOKEN_KEY}
