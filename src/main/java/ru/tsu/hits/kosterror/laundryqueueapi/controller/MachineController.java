@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/machine")
+@RequestMapping("/api/machines")
 @RequiredArgsConstructor
 @Tag(name = "Машины")
 public class MachineController {
