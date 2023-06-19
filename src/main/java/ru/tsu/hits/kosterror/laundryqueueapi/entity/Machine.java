@@ -29,6 +29,8 @@ public class Machine {
 
     private LocalDateTime startTime;
 
+    private String ip;
+
     @Enumerated(value = EnumType.STRING)
     private MachineType type;
 

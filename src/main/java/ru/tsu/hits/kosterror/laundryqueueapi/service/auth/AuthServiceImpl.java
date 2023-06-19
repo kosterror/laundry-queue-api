@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.AuthDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.RefreshToken;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public TokenDto login(@NonNull PersonCredentials credentials) {
+    public AuthDto login(@NonNull PersonCredentials credentials) {
         Person person = personRepository
                 .findByEmail(credentials.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Не авторизован"));
@@ -42,9 +42,10 @@ public class AuthServiceImpl implements AuthService {
 
         String accessToken = jwtService.generateAccessToken(person.getId(), person.getEmail(), String.valueOf(person.getRole()));
 
-        return new TokenDto(
+        return new AuthDto(
                 accessToken,
-                generateAndSaveRefreshToken(person)
+                generateAndSaveRefreshToken(person),
+                person.getRole()
         );
     }
 
@@ -63,6 +64,29 @@ public class AuthServiceImpl implements AuthService {
         if (refreshToken.getExpiredAt().before(new Date())) {
             throw new BadRequestException("Срок действия рефреш токена истёк");
         }
+    }
+
+    @Override
+    public AuthDto refreshTokens(UUID personId, StringObject refreshTokenDto) {
+        var person = personRepository
+                .findById(personId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
+        var refreshToken = refreshTokenRepository
+                .findByOwnerAndToken(person, refreshTokenDto.getValue())
+                .orElseThrow(() -> new UnauthorizedException("Такой рефреш токен не найден"));
+
+        if (refreshToken.getExpiredAt().before(new Date())) {
+            throw new UnauthorizedException("Рефреш токен истёк");
+        }
+
+        refreshTokenRepository.delete(refreshToken);
+
+        return new AuthDto(
+                jwtService.generateAccessToken(person.getId(), person.getEmail(), person.getRole().toString()),
+                generateAndSaveRefreshToken(person),
+                person.getRole()
+        );
     }
 
     private String generateAndSaveRefreshToken(Person person) {

@@ -2,7 +2,8 @@ package ru.tsu.hits.kosterror.laundryqueueapi.service.token;
 
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.DeviceTokenDto;
 
-public interface TokenService {
+import java.util.UUID;
 
-    void createNewToken(DeviceTokenDto deviceTokenDto);
+public interface TokenService {
+    void saveDeviceToken(UUID personId, DeviceTokenDto deviceTokenDto);
 }
