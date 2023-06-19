@@ -14,12 +14,12 @@ public class StudentMapper {
         return new StudentDto(
                 entity.getId(),
                 entity.getDormitory().getId(),
-                entity.getStudentNumber(),
                 entity.getEmail(),
                 entity.getName(),
                 entity.getSurname(),
                 entity.getRoom(),
-                entity.getMoney()
+                entity.getMoney(),
+                entity.getRole()
         );
     }
 

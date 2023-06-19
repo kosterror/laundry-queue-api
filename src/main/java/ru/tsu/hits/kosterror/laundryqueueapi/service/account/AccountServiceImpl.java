@@ -57,7 +57,6 @@ public class AccountServiceImpl implements AccountService{
         person.setName(updateStudentInfo.getName());
         person.setSurname(updateStudentInfo.getSurname());
         person.setRoom(updateStudentInfo.getRoom());
-        person.setStudentNumber(updateStudentInfo.getStudentNumber());
         person.setDormitory(dormitoryService.findDormitory(updateStudentInfo.getDormitoryId()));
 
         personRepository.save(person);

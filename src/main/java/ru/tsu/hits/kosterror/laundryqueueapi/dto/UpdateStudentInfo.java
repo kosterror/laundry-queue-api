@@ -26,9 +26,6 @@ public class UpdateStudentInfo {
     @NotNull(message = "Фамилия не может быть null")
     private String surname;
 
-    @NotNull(message = "Номер студенческого не может быть null")
-    private String studentNumber;
-
     @NotNull(message = "Номер комнаты не может быть null")
     private String room;
 
