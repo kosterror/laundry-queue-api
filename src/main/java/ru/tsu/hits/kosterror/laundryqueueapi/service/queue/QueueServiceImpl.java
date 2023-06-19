@@ -37,14 +37,7 @@ public class QueueServiceImpl implements QueueService {
                     "некорректного размера %s", machine.getId(), slots.size()));
         }
 
-        return slots.stream().sorted((slot1, slot2) -> {
-                    if (slot1.getNumber() < slot2.getNumber()) {
-                        return -1;
-                    } else if (slot1.getNumber() > slot2.getNumber()) {
-                        return 1;
-                    }
-                    return 0;
-                })
+        return slots.stream().sorted()
                 .map(queueMapper::entityToSlot)
                 .toList();
     }

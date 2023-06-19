@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QueueSlot {
+public class QueueSlot implements Comparable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -32,5 +32,21 @@ public class QueueSlot {
     @OneToOne
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @Override
+    public int compareTo(@NonNull Object object) {
+        if (object.getClass() != QueueSlot.class) {
+            throw new ClassCastException("Некорректный тип у сравниваемого объекта");
+        }
+        int oNumber = ((QueueSlot) object).getNumber();
+
+        if (number < oNumber) {
+            return -1;
+        } else if (number > oNumber) {
+            return 1;
+        }
+
+        return 0;
+    }
 
 }
