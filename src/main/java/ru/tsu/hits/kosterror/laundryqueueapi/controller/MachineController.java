@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/machine")
 @RequiredArgsConstructor
 @Tag(name = "Машины")
 public class MachineController {
@@ -25,7 +25,7 @@ public class MachineController {
     @Operation(
             summary = "Получить данные о машинах в общежитии."
     )
-    @GetMapping("/machine/{dormitoryId}")
+    @GetMapping("/{dormitoryId}")
     public List<MachineDto> getMachines(@PathVariable UUID dormitoryId) {
         return machineService.getMachines(dormitoryId);
     }

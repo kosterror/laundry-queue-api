@@ -60,7 +60,7 @@ public class AccountController {
             summary = "Изменить данные о себe(админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PutMapping("/account/admin")
+    @PutMapping("/admin")
     public PersonDto changeAdminInfo(Authentication authentication, @Valid @RequestBody UpdateAdminInfo updateAdminInfo) {
         PersonData personData = objectMapper.convertValue(authentication.getPrincipal(), PersonData.class);
         return accountService.changeAdminInfo(personData.getId(), updateAdminInfo);

@@ -11,7 +11,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.service.manageaccount.ManageAccount
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/creator")
 @RequiredArgsConstructor
 @Tag(name = "Создание аккаунтов")
 public class AccountCreatorController {
@@ -22,7 +22,7 @@ public class AccountCreatorController {
             summary = "Создать аккаунт студента",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PostMapping("/creator/student/{email}")
+    @PostMapping("/student/{email}")
     public void createStudent(@PathVariable String email) {
         manageAccountService.createStudent(email);
     }
@@ -31,7 +31,7 @@ public class AccountCreatorController {
             summary = "Создать аккаунт сотрудника",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PostMapping("/creator/employee")
+    @PostMapping("/employee")
     public void createEmployee(@RequestBody @Valid CreateEmployeeDto dto) {
         manageAccountService.createEmployee(dto);
     }
