@@ -8,7 +8,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDto {
+public class AuthDto {
     private String accessToken;
     private String refreshToken;
     private Role role;
