@@ -96,7 +96,7 @@ public class NotificationServiceImpl implements NotificationService {
                 );
                 sendMessage(message);
                 log.info("Отправка уведомления пользователю с id {} о том, что он может " +
-                        "быть следующим успешно завершена");
+                        "быть следующим успешно завершена", person.getId());
             } else {
                 log.warn("У пользователя с id {} из очереди нет токена девайса", person.getId());
             }
