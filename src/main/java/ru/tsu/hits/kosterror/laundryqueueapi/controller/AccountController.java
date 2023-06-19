@@ -26,7 +26,7 @@ public class AccountController {
     private final ObjectMapper objectMapper;
 
     @Operation(
-            summary = "Получить данные о cебе(студент).",
+            summary = "Получить данные о себе (студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/student")
@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @Operation(
-            summary = "Получить данные о cебе(админ/сотрудник).",
+            summary = "Получить данные о себе (админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/admin")
@@ -47,7 +47,7 @@ public class AccountController {
 
 
     @Operation(
-            summary = "Изменить данные о себe(студент).",
+            summary = "Изменить данные о себе (студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/student")
@@ -57,7 +57,7 @@ public class AccountController {
     }
 
     @Operation(
-            summary = "Изменить данные о себe(админ/сотрудник).",
+            summary = "Изменить данные о себе (админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/admin")
