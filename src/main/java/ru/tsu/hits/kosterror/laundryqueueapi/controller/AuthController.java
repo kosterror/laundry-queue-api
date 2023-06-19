@@ -34,17 +34,11 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Обновить пару токенов",
-            security = @SecurityRequirement(name = "bearerAuth")
+            summary = "Обновить пару токенов"
     )
-    @PostMapping
-    public AuthDto refreshTokens(@RequestBody @Valid StringObject refreshToken,
-                                 Authentication authentication) {
-        return authService
-                .refreshTokens(
-                        ((PersonData) authentication.getPrincipal()).getId(),
-                        refreshToken
-                );
+    @PostMapping("/refresh")
+    public AuthDto refreshTokens(@RequestBody @Valid StringObject refreshToken) {
+        return authService.refreshTokens(refreshToken);
     }
 
     @Operation(

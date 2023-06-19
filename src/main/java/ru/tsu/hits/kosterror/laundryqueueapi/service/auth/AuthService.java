@@ -12,5 +12,5 @@ public interface AuthService {
 
     void logout(UUID id, StringObject refreshToken);
 
-    AuthDto refreshTokens(UUID personId, StringObject refreshToken);
+    AuthDto refreshTokens(StringObject refreshToken);
 }

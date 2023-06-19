@@ -67,14 +67,12 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthDto refreshTokens(UUID personId, StringObject refreshTokenDto) {
-        var person = personRepository
-                .findById(personId)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-
+    public AuthDto refreshTokens(StringObject refreshTokenDto) {
         var refreshToken = refreshTokenRepository
-                .findByOwnerAndToken(person, refreshTokenDto.getValue())
+                .findByToken(refreshTokenDto.getValue())
                 .orElseThrow(() -> new UnauthorizedException("Такой рефреш токен не найден"));
+
+        var person = refreshToken.getOwner();
 
         if (refreshToken.getExpiredAt().before(new Date())) {
             throw new UnauthorizedException("Рефреш токен истёк");
