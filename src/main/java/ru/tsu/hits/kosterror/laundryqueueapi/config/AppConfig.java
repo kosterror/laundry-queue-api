@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 import org.springframework.web.filter.ServletContextRequestLoggingFilter;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalServerException;
@@ -27,6 +28,11 @@ public class AppConfig {
 
     @Value("${application.name}")
     private String applicationName;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public Random random() {

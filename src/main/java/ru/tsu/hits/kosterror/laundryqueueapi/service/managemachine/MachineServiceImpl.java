@@ -10,7 +10,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.MachineMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryServiceImpl;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,13 +22,12 @@ public class MachineServiceImpl implements MachineService {
 
     private final MachineRepository machineRepository;
     private final MachineMapper machineMapper;
-    private final DormitoryServiceImpl dormitoryServiceImpl;
+    private final DormitoryService dormitoryService;
 
     @Override
     public List<MachineDto> getMachines(UUID dormitoryId) {
-        List<Machine> machines = machineRepository.findAllByLocation(dormitoryServiceImpl.findDormitory(dormitoryId))
-                .orElseThrow(() ->
-                        new NotFoundException("Машины в общежитии c id " + dormitoryId + " не были найдены"));
+        List<Machine> machines = dormitoryService.findDormitory(dormitoryId).getMachines();
+
         return machines
                 .stream()
                 .map(machineMapper::machineToMachineDto)
@@ -40,7 +39,7 @@ public class MachineServiceImpl implements MachineService {
 
         Machine machine = machineMapper.machineDtoToEntity(
                 createNewMachineDto,
-                dormitoryServiceImpl.findDormitory(
+                dormitoryService.findDormitory(
                         createNewMachineDto.getLocation()
                 ));
         machineRepository.save(machine);

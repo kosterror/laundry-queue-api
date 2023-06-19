@@ -11,13 +11,15 @@ import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 @RequiredArgsConstructor
 public class MachineMapper {
 
+    private final QueueMapper queueMapper;
+
     public MachineDto machineToMachineDto(Machine machine) {
         return new MachineDto(
                 machine.getId(),
                 machine.getStartTime(),
                 machine.getType(),
                 machine.getStatus(),
-                machine.getQueueSlots(),
+                machine.getQueueSlots().stream().sorted().map(queueMapper::entityToSlot).toList(),
                 machine.getLocation().getId()
         );
     }

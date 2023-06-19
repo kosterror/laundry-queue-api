@@ -7,4 +7,8 @@ import java.util.UUID;
 
 public interface QueueService {
     List<QueueSlotDto> getQueueByMachine(UUID machineId);
+
+    void startLaundry(UUID personId);
+
+    List<QueueSlotDto> signUpForQueue(UUID personId, UUID slotId);
 }
