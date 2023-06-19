@@ -2,6 +2,7 @@ package ru.tsu.hits.kosterror.laundryqueueapi.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,10 +30,12 @@ public class SpringSecurity {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/api/creator/student/**", "POST").hasAnyRole(ADMIN, EMPLOYEE)
-                .antMatchers("/api/creator/employee/**", "POST").hasRole(ADMIN)
-                .antMatchers("/api/secured", "GET").authenticated()
-                .antMatchers("/api/money/decrease", "POST").hasRole(ADMIN)
+                .antMatchers(HttpMethod.POST, "/api/creator/student/**").hasAnyRole(ADMIN, EMPLOYEE)
+                .antMatchers(HttpMethod.POST, "/api/creator/employee/**").hasRole(ADMIN)
+                .antMatchers(HttpMethod.POST, "/api/money/decrease").hasRole(ADMIN)
+                .antMatchers(HttpMethod.POST, "/api/machines").hasAnyRole(ADMIN, EMPLOYEE)
+                .antMatchers(HttpMethod.DELETE, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)
+                .antMatchers(HttpMethod.PUT, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers("/api/money/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
