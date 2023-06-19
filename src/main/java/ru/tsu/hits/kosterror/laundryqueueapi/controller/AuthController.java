@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.AuthDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.TokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.auth.AuthService;
 
@@ -29,8 +29,22 @@ public class AuthController {
             summary = "Логин"
     )
     @PostMapping("/login")
-    public TokenDto login(@RequestBody @Valid PersonCredentials credentials) {
+    public AuthDto login(@RequestBody @Valid PersonCredentials credentials) {
         return authService.login(credentials);
+    }
+
+    @Operation(
+            summary = "Обновить пару токенов",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @PostMapping
+    public AuthDto refreshTokens(@RequestBody @Valid StringObject refreshToken,
+                                 Authentication authentication) {
+        return authService
+                .refreshTokens(
+                        ((PersonData) authentication.getPrincipal()).getId(),
+                        refreshToken
+                );
     }
 
     @Operation(
