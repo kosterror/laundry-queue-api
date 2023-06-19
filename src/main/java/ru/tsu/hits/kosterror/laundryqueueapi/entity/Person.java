@@ -41,8 +41,6 @@ public class Person {
 
     private BigDecimal money;
 
-    private String deviceToken;
-
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
@@ -54,6 +52,9 @@ public class Person {
 
     @OneToMany(mappedBy = "owner")
     private List<RefreshToken> refreshTokens;
+
+    @OneToMany(mappedBy = "owner")
+    private List<DeviceToken> deviceTokens;
 
     @ManyToOne
     @JoinColumn(name = "dormitory_id")

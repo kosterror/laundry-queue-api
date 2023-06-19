@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.NotificationType;
-import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalServerException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -44,78 +44,73 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void sendLaundryFinished(Person person) {
         log.info("Отправка уведомления об окончании стирки для пользователя с id {}", person.getId());
-        checkDeviceToken(person);
         var notification = buildNotification(
                 "Стирка закончилась",
                 "Стирка закончилась, вам необходимо забрать ваши вещи"
         );
-        var message = buildMessage(
+
+        var messages = buildMessages(
+                person,
                 notification,
-                person.getDeviceToken(),
                 Map.of(TYPE_KEY, NotificationType.LAUNDRY_FINISHED.toString())
         );
-        sendMessage(message);
+
+        sendMessages(messages);
         log.info("Отправка уведомления об окончании стирки для пользователя с id {} успешно завершена", person.getId());
     }
 
     @Override
     public void sendYouAreNext(Person person) {
         log.info("Отправка уведомления о том, что пользователь с id {} следующий в очереди", person.getId());
-        checkDeviceToken(person);
         var notification = buildNotification(
                 "Скорее загружайте вещи!",
                 "У вас есть 5 минут, чтобы загрузить вещи в машину! Если вы не уложитесь в эти 5 минут, " +
                         "то потеряете место в очереди"
         );
-        var message = buildMessage(
+        var messages = buildMessages(
+                person,
                 notification,
-                person.getDeviceToken(),
                 Map.of(TYPE_KEY, NotificationType.YOU_ARE_NEXT.toString())
         );
-        sendMessage(message);
+        sendMessages(messages);
         log.info("Отправка уведомления о том, что пользователь с id {} следующий в очереди успешно завершена", person.getId());
     }
 
     @Override
     public void sendYouCanBeNext(List<Person> persons) {
         for (var person : persons) {
-            if (person.getDeviceToken() != null) {
-                log.info(
-                        "Отправка уведомления пользователю с id {} о том, что он может быть следующим",
-                        person.getId()
-                );
-                var notification = buildNotification(
-                        "У вас есть шанс постираться прямо сейчас",
-                        "Нажмите на это уведомление и подтвердите, что вы готовы в течение 5 минут пойти стираться," +
-                                "чтобы быть следующим!"
-                );
-                var message = buildMessage(
-                        notification,
-                        person.getDeviceToken(),
-                        Map.of(TYPE_KEY, NotificationType.YOU_CAN_BE_NEXT.toString())
-                );
-                sendMessage(message);
-                log.info("Отправка уведомления пользователю с id {} о том, что он может " +
-                        "быть следующим успешно завершена", person.getId());
-            } else {
-                log.warn("У пользователя с id {} из очереди нет токена девайса", person.getId());
-            }
+            log.info(
+                    "Отправка уведомления пользователю с id {} о том, что он может быть следующим",
+                    person.getId()
+            );
+            var notification = buildNotification(
+                    "У вас есть шанс постираться прямо сейчас",
+                    "Нажмите на это уведомление и подтвердите, что вы готовы в течение 5 минут пойти стираться," +
+                            "чтобы быть следующим!"
+            );
+            var messages = buildMessages(
+                    person,
+                    notification,
+                    Map.of(TYPE_KEY, NotificationType.YOU_CAN_BE_NEXT.toString())
+            );
+            sendMessages(messages);
+            log.info("Отправка уведомления пользователю с id {} о том, что он может " +
+                    "быть следующим успешно завершена", person.getId());
         }
     }
 
     public void sendInfoNotification(Person person) {
         log.info("Отправка обычного уведомления пользователю с id {}", person.getId());
-        checkDeviceToken(person);
         var notification = buildNotification(
                 "Уведомление с обычной информацией",
                 "Тело уведомления с обычной информацией"
         );
-        var message = buildMessage(
+        var messages = buildMessages(
+                person,
                 notification,
-                person.getDeviceToken(),
                 Map.of(TYPE_KEY, NotificationType.INFO.toString())
         );
-        sendMessage(message);
+        sendMessages(messages);
         log.info("Уведомление с обычной информацией успешно отправилось пользователю с id {}", person.getId());
     }
 
@@ -127,18 +122,34 @@ public class NotificationServiceImpl implements NotificationService {
                 .build();
     }
 
-    private Message buildMessage(Notification notification, String token, Map<String, String> data) {
-        return Message
-                .builder()
-                .setNotification(notification)
-                .setToken(token)
-                .putAllData(data)
-                .build();
+    private List<Message> buildMessages(Person person, Notification notification, Map<String, String> data) {
+        List<Message> messages = new ArrayList<>(person.getDeviceTokens().size());
+        for (var deviceToken : person.getDeviceTokens()) {
+            if (deviceToken.getToken() != null) {
+                messages.add(
+                        Message
+                                .builder()
+                                .setNotification(notification)
+                                .setToken(deviceToken.getToken())
+                                .putAllData(data)
+                                .build()
+                );
+            } else {
+                log.warn(
+                        "Токен девайса c id {} у пользователя с id {} равен null",
+                        deviceToken.getId(),
+                        person.getId()
+                );
+            }
+        }
+        return messages;
     }
 
-    private void checkDeviceToken(Person person) {
-        if (person.getDeviceToken() == null) {
-            throw new BadRequestException("У данного пользователя нет токена девайса");
+    private void sendMessages(List<Message> messages) {
+        try {
+            messages.forEach(this::sendMessage);
+        } catch (InternalServerException e) {
+            log.error("Не удалось отправить уведомление пользователю", e);
         }
     }
 
