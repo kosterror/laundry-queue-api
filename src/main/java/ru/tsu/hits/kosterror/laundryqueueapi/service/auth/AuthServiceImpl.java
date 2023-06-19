@@ -44,7 +44,8 @@ public class AuthServiceImpl implements AuthService {
 
         return new TokenDto(
                 accessToken,
-                generateAndSaveRefreshToken(person)
+                generateAndSaveRefreshToken(person),
+                person.getRole()
         );
     }
 
