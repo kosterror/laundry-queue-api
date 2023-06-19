@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/machines")
 @RequiredArgsConstructor
 @Tag(name = "Машины")
 public class MachineController {
@@ -23,10 +23,9 @@ public class MachineController {
     private final MachineService machineService;
 
     @Operation(
-            summary = "Получить данные о машинах в общежитии.",
-            security = @SecurityRequirement(name = "bearerAuth")
+            summary = "Получить данные о машинах в общежитии."
     )
-    @GetMapping("/machine/{dormitoryId}")
+    @GetMapping("/{dormitoryId}")
     public List<MachineDto> getMachines(@PathVariable UUID dormitoryId) {
         return machineService.getMachines(dormitoryId);
     }
@@ -35,7 +34,7 @@ public class MachineController {
             summary = "Создать новую машину.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PostMapping("/machine")
+    @PostMapping
     public MachineDto createNewMachine(
             @Valid @RequestBody CreateNewMachineDto createNewMachineDto) {
         return machineService.createNewMachine(createNewMachineDto);
@@ -45,7 +44,7 @@ public class MachineController {
             summary = "Изменить статус машины.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PatchMapping("/machine")
+    @PutMapping
     public MachineDto changeMachineStatus(
             @Valid @RequestBody ChangeMachineStatusDto changeMachineStatusDto) {
         return machineService.changeMachineStatus(changeMachineStatusDto);
@@ -55,8 +54,8 @@ public class MachineController {
             summary = "Удалить машину.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @DeleteMapping("/machine/{machineId}")
-    public void deleteMachine( @PathVariable UUID machineId) {
+    @DeleteMapping("/{machineId}")
+    public void deleteMachine(@PathVariable UUID machineId) {
         machineService.deleteMachine(machineId);
     }
 

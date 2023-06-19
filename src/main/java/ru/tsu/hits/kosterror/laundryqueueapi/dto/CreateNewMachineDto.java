@@ -14,12 +14,16 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CreateNewMachineDto {
 
-    @NotNull
+    @NotNull(message = "Тип машины не может быть null")
     private MachineType type;
 
-    @NotNull
+    @NotNull(message = "Статус машины не может быть null")
     private MachineStatus machineStatus;
 
-    @NotNull
+    @NotNull(message = "Ip машины не может быть null")
+    private String ip;
+
+    @NotNull(message = "Местоположение машины не может быть null")
     private UUID location;
+
 }

@@ -40,6 +40,10 @@ security:
         method: POST
       - pattern: /api/unsecured
         method: GET
+      - pattern: /api/machines/*
+        method: GET
+      - pattern: /api/dormitories
+        method: GET
 
 application:
   name: laundry-queue-api
