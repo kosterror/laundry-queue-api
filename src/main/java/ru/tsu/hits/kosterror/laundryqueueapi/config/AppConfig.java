@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.AbstractRequestLoggingFilter;
+import org.springframework.web.filter.ServletContextRequestLoggingFilter;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalServerException;
 
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.util.Random;
 
 @Configuration
 public class AppConfig {
+
+    private static final int REQUEST_PAYLOAD_SIZE = 1000;
 
     @Value("${application.firebase-configuration-file}")
     private String firebaseConfigFilename;
@@ -50,6 +54,18 @@ public class AppConfig {
         } catch (IOException e) {
             throw new InternalServerException("Ошибка при считывании файла для конфигурации FCM", e);
         }
+    }
+
+    @Bean
+    AbstractRequestLoggingFilter abstractRequestLoggingFilter() {
+        ServletContextRequestLoggingFilter loggingFilter = new ServletContextRequestLoggingFilter();
+        loggingFilter.setIncludeClientInfo(true);
+        loggingFilter.setIncludeQueryString(true);
+        loggingFilter.setIncludePayload(true);
+        loggingFilter.setIncludeHeaders(true);
+        loggingFilter.setMaxPayloadLength(REQUEST_PAYLOAD_SIZE);
+
+        return loggingFilter;
     }
 
 }
