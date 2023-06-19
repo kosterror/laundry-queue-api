@@ -38,6 +38,8 @@ security:
     endpoints:
       - pattern: /api/login
         method: POST
+      - pattern: /api/refresh
+        method: POST
       - pattern: /api/unsecured
         method: GET
       - pattern: /api/machines/*
