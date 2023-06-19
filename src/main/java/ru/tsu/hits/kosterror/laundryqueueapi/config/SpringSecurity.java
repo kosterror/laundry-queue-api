@@ -33,6 +33,8 @@ public class SpringSecurity {
                 .antMatchers(HttpMethod.POST, "/api/creator/student/**").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.POST, "/api/creator/employee/**").hasRole(ADMIN)
                 .antMatchers(HttpMethod.POST, "/api/money/decrease").hasRole(ADMIN)
+                .antMatchers(HttpMethod.GET, "/api/account/admin").hasAnyRole(ADMIN, EMPLOYEE)
+                .antMatchers(HttpMethod.PUT, "/api/account/admin").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.POST, "/api/machines").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.DELETE, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.PUT, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)

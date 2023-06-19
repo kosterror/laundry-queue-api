@@ -3,6 +3,7 @@ package ru.tsu.hits.kosterror.laundryqueueapi.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -16,8 +17,6 @@ public class StudentDto {
 
     private UUID dormitoryId;
 
-    private String studentNumber;
-
     private String email;
 
     private String name;
@@ -27,4 +26,6 @@ public class StudentDto {
     private String room;
 
     private BigDecimal money;
+
+    private Role role;
 }

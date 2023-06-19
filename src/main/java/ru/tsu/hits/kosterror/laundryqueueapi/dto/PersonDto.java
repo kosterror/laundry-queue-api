@@ -18,4 +18,5 @@ public class PersonDto {
     private String surname;
     private BigDecimal money;
     private Role role;
+    private UUID dormitoryId;
 }

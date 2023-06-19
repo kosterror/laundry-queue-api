@@ -36,7 +36,7 @@ public class MoneyServiceImpl implements MoneyService {
         person.setMoney(newBalance);
         person = personRepository.save(person);
 
-        return personMapper.entityToDto(person);
+        return personMapper.entityToAdminDto(person);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MoneyServiceImpl implements MoneyService {
         person.setMoney(newBalance);
         person = personRepository.save(person);
 
-        return personMapper.entityToDto(person);
+        return personMapper.entityToAdminDto(person);
     }
 
 }

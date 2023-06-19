@@ -10,7 +10,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.PersonMapper;
-import ru.tsu.hits.kosterror.laundryqueueapi.mapper.StudentMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
 
@@ -23,18 +22,17 @@ public class AccountServiceImpl implements AccountService{
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
-    private final StudentMapper studentMapper;
     private final DormitoryService dormitoryService;
 
     @Override
     public StudentDto getStudentInfo(UUID id){
 
-        return studentMapper.entityToStudentDto(findPerson(id));
+        return personMapper.entityToStudentDto(findPerson(id));
     }
 
     @Override
     public PersonDto getPersonInfo(UUID id) {
-        return personMapper.entityToDto(findPerson(id));
+        return personMapper.entityToAdminDto(findPerson(id));
     }
 
     @Override
@@ -44,9 +42,10 @@ public class AccountServiceImpl implements AccountService{
         person.setEmail(updateAdminInfo.getEmail());
         person.setName(updateAdminInfo.getName());
         person.setSurname(updateAdminInfo.getSurname());
+        person.setDormitory(dormitoryService.findDormitory(updateAdminInfo.getDormitoryId()));
 
         personRepository.save(person);
-        return personMapper.entityToDto(person);
+        return personMapper.entityToAdminDto(person);
     }
 
     @Override
@@ -57,11 +56,10 @@ public class AccountServiceImpl implements AccountService{
         person.setName(updateStudentInfo.getName());
         person.setSurname(updateStudentInfo.getSurname());
         person.setRoom(updateStudentInfo.getRoom());
-        person.setStudentNumber(updateStudentInfo.getStudentNumber());
         person.setDormitory(dormitoryService.findDormitory(updateStudentInfo.getDormitoryId()));
 
         personRepository.save(person);
-        return studentMapper.entityToStudentDto(person);
+        return personMapper.entityToStudentDto(person);
     }
 
     private Person findPerson(UUID id){

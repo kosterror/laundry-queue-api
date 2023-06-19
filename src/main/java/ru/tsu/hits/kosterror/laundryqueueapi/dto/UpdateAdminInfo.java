@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 import static ru.tsu.hits.kosterror.laundryqueueapi.util.ValidationConstants.EMAIL_REGEX;
 
@@ -24,4 +25,7 @@ public class UpdateAdminInfo {
 
     @NotNull(message = "Фамилия не может быть null")
     private String surname;
+
+    @NotNull(message = "Id общежития не может быть null")
+    private UUID dormitoryId;
 }

@@ -27,8 +27,6 @@ public class Person {
     )
     private UUID id;
 
-    private String studentNumber;
-
     private String email;
 
     private String password;
