@@ -27,6 +27,8 @@ public class Machine {
     )
     private UUID id;
 
+    private String name;
+
     private LocalDateTime startTime;
 
     private String ip;

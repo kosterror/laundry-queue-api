@@ -16,6 +16,7 @@ public class MachineMapper {
     public MachineDto machineToMachineDto(Machine machine) {
         return new MachineDto(
                 machine.getId(),
+                machine.getName(),
                 machine.getStartTime(),
                 machine.getType(),
                 machine.getStatus(),
@@ -27,6 +28,7 @@ public class MachineMapper {
     public Machine machineDtoToEntity(CreateNewMachineDto machineDto, Dormitory dormitory) {
         return Machine
                 .builder()
+                .name(machineDto.getName())
                 .type(machineDto.getType())
                 .status(machineDto.getMachineStatus())
                 .location(dormitory)
