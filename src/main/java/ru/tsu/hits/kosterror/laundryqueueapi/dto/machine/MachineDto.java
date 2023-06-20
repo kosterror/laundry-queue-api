@@ -19,6 +19,8 @@ public class MachineDto {
 
     private UUID id;
 
+    private String name;
+
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss:SSS")
     private LocalDateTime startTime;
 
