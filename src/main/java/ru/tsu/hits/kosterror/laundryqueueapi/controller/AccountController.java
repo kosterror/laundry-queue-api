@@ -7,10 +7,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StudentDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateAdminInfo;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateStudentInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateAdminInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.account.AccountService;
 

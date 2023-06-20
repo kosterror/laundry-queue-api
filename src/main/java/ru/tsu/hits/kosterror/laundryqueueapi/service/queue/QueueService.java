@@ -1,6 +1,6 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.queue;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.QueueSlotDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 
 import java.util.List;
 import java.util.UUID;

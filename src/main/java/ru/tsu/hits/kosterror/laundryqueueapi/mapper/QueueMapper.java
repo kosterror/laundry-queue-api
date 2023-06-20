@@ -1,7 +1,7 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.QueueSlotDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.QueueSlot;
 
 @Component

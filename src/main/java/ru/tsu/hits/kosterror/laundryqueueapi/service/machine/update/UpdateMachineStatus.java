@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StatusDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.StatusDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.QueueSlot;

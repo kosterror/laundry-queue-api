@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.dto;
+package ru.tsu.hits.kosterror.laundryqueueapi.dto.dormitory;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

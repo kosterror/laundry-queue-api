@@ -1,6 +1,6 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.manageaccount;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.CreateEmployeeDto;
 
 public interface ManageAccountService {
 

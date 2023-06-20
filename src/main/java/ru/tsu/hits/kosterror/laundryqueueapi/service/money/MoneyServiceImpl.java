@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.PersonMapper;

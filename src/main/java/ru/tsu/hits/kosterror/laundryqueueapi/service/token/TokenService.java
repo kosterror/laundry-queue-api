@@ -1,6 +1,6 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.token;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.DeviceTokenDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.DeviceTokenDto;
 
 import java.util.UUID;
 

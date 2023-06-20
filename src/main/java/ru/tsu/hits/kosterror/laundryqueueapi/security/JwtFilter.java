@@ -11,7 +11,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.tsu.hits.kosterror.laundryqueueapi.config.EndpointsPermitAll;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiError;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.ApiError;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.jwt.JwtService;
 
 import javax.servlet.FilterChain;

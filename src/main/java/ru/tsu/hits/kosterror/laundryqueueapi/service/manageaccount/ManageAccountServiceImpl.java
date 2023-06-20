@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.CreateEmployeeDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;

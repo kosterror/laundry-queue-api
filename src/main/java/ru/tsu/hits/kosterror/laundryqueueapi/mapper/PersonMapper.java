@@ -3,8 +3,8 @@ package ru.tsu.hits.kosterror.laundryqueueapi.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StudentDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
 
 @Component

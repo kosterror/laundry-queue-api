@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.DeviceTokenDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.DeviceTokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.DeviceToken;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.DeviceTokenRepository;

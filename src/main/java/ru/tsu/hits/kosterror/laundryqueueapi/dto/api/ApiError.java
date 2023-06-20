@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.dto;
+package ru.tsu.hits.kosterror.laundryqueueapi.dto.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

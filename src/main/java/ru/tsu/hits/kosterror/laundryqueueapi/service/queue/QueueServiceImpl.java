@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.QueueSlotDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;

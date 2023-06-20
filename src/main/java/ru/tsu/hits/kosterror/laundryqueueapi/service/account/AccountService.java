@@ -1,9 +1,9 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.account;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StudentDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateAdminInfo;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateStudentInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateAdminInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateStudentInfo;
 
 import java.util.UUID;
 

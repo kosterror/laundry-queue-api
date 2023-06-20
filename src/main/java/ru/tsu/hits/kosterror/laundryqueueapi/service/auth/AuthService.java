@@ -1,8 +1,8 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service.auth;
 
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.AuthDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.StringObject;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.AuthDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonCredentials;
 
 import java.util.UUID;
 

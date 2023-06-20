@@ -1,4 +1,4 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.dto;
+package ru.tsu.hits.kosterror.laundryqueueapi.dto.person;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import static ru.tsu.hits.kosterror.laundryqueueapi.util.ValidationConstants.EMA
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UpdateAdminInfo {
+public class UpdateStudentInfo {
 
     @Schema(example = "email@domain.com")
     @Pattern(regexp = EMAIL_REGEX, message = "Почта не соответствует формату")
@@ -25,6 +25,9 @@ public class UpdateAdminInfo {
 
     @NotNull(message = "Фамилия не может быть null")
     private String surname;
+
+    @NotNull(message = "Номер комнаты не может быть null")
+    private String room;
 
     @NotNull(message = "Id общежития не может быть null")
     private UUID dormitoryId;

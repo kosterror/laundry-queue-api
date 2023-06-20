@@ -1,9 +1,10 @@
-package ru.tsu.hits.kosterror.laundryqueueapi.dto;
+package ru.tsu.hits.kosterror.laundryqueueapi.dto.machine;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineType;
 
