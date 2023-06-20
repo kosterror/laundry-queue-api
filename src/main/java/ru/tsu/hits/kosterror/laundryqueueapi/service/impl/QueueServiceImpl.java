@@ -180,7 +180,7 @@ public class QueueServiceImpl implements QueueService {
             var nextPerson = queue.get(i).getPerson();
 
             if (nextPerson != null) {
-                notificationService.sendInfoNotification(
+                notificationService.sendNotification(
                         person,
                         "Очередь перед вами освободилась!",
                         "Очередь в слоте " + queueSlot.getNumber() + " освободилась, скорее перезапишитесь!"

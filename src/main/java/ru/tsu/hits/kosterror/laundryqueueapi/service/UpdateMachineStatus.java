@@ -23,6 +23,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static ru.tsu.hits.kosterror.laundryqueueapi.util.NotificationConstants.*;
 import static ru.tsu.hits.kosterror.laundryqueueapi.util.QueueConstants.*;
 
 @Slf4j
@@ -130,12 +131,7 @@ public class UpdateMachineStatus {
             var currentPerson = queue.get(i).getPerson();
             if (currentPerson != null) {
                 try {
-                    notificationService.sendInfoNotification(
-                            currentPerson,
-                            "Слот перед вами освободился!",
-                            "В очереди перед вами освободился слот, у вас есть шанс воспользоваться" +
-                                    " услугами раньше."
-                    );
+                    notificationService.sendNotification(currentPerson, YOU_CAN_BE_NEXT_TITLE, YOU_CAN_BE_NEXT_BODY);
                 } catch (Exception e) {
                     log.error("Ошибка во время отправка уведомления о том, что" +
                             " слот перед человеком освободился", e);
@@ -177,7 +173,7 @@ public class UpdateMachineStatus {
             log.warn("Машина закончила работу, но первый слот в очереди пустой");
         } else {
             try {
-                notificationService.sendLaundryFinished(currentPerson);
+                notificationService.sendNotification(currentPerson, LAUNDRY_FINISHED_TITLE, LAUNDRY_FINISHED_BODY);
             } catch (Exception e) {
                 log.error(
                         "Ошибка во время отправки уведомления об окончании работы машины пользователю {}",
@@ -189,10 +185,7 @@ public class UpdateMachineStatus {
 
         if (nextPerson != null) {
             try {
-                notificationService.sendInfoNotification(nextPerson, "Скорее загружайте вещи!", "У " +
-                        "вас есть 5 минут, чтобы загрузить вещи в машину. Если вы не уложитесь в " +
-                        "эти 5 минут, то вас исключат из очереди!"
-                );
+                notificationService.sendNotification(nextPerson, YOU_NEXT_TITLE, YOU_NEXT_BODY);
             } catch (Exception e) {
                 log.error("Ошибка во время отправки уведомления о том, что пользователь {} следующий в очереди",
                         nextPerson.getId(), e);

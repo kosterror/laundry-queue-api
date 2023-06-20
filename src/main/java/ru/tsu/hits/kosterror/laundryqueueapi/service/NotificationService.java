@@ -1,21 +1,13 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.service;
 
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
-import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.NotificationType;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface NotificationService {
 
-    void sendInfoNotification(Person person, String title, String body);
+    void sendNotification(Person person, String title, String body);
 
-    void sendNotification(UUID personId, NotificationType type);
-
-    void sendLaundryFinished(Person person);
-
-    void sendYouAreNext(Person person);
-
-    void sendYouCanBeNext(List<Person> persons);
+    void sendNotification(UUID personId, String title, String body);
 
 }
