@@ -65,10 +65,10 @@ public class AppConfig {
     @Bean
     AbstractRequestLoggingFilter abstractRequestLoggingFilter() {
         ServletContextRequestLoggingFilter loggingFilter = new ServletContextRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
+        loggingFilter.setIncludeClientInfo(false);
+        loggingFilter.setIncludeQueryString(false);
         loggingFilter.setIncludePayload(true);
-        loggingFilter.setIncludeHeaders(true);
+        loggingFilter.setIncludeHeaders(false);
         loggingFilter.setMaxPayloadLength(REQUEST_PAYLOAD_SIZE);
 
         return loggingFilter;

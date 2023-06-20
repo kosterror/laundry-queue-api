@@ -14,7 +14,7 @@ public class PersonMapper {
     public StudentDto entityToStudentDto(Person entity){
         return new StudentDto(
                 entity.getId(),
-                entity.getDormitory().getId(),
+                entity.getDormitory() != null ? entity.getDormitory().getId() : null,
                 entity.getEmail(),
                 entity.getName(),
                 entity.getSurname(),
@@ -31,7 +31,7 @@ public class PersonMapper {
                 entity.getSurname(),
                 entity.getMoney(),
                 entity.getRole(),
-                entity.getDormitory().getId()
+                entity.getDormitory() != null ? entity.getDormitory().getId() : null
         );
     }
 

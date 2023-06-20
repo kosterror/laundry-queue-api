@@ -2,16 +2,21 @@ package ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.ChangeMachineStatusDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.MachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
+import ru.tsu.hits.kosterror.laundryqueueapi.entity.QueueSlot;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.MachineMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,9 +25,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MachineServiceImpl implements MachineService {
 
+    @Value("${application.queue-size}")
+    private int queueSize;
+
     private final MachineRepository machineRepository;
     private final MachineMapper machineMapper;
     private final DormitoryService dormitoryService;
+    private final QueueSlotRepository queueSlotRepository;
 
     @Override
     public List<MachineDto> getMachines(UUID dormitoryId) {
@@ -34,21 +43,31 @@ public class MachineServiceImpl implements MachineService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public MachineDto createNewMachine(CreateNewMachineDto createNewMachineDto) {
+        var dormitory = dormitoryService.findDormitory(createNewMachineDto.getLocation());
+        Machine machine = machineMapper.machineDtoToEntity(createNewMachineDto, dormitory);
 
-        Machine machine = machineMapper.machineDtoToEntity(
-                createNewMachineDto,
-                dormitoryService.findDormitory(
-                        createNewMachineDto.getLocation()
-                ));
+        List<QueueSlot> queue = new ArrayList<>();
+        for (int queueNumber = 1; queueNumber <= queueSize; queueNumber++) {
+            queue.add(
+                    QueueSlot
+                            .builder()
+                            .machine(machine)
+                            .number(queueNumber + 1)
+                            .build()
+            );
+        }
+
+        machine.setQueueSlots(queue);
         machineRepository.save(machine);
+        queueSlotRepository.saveAll(queue);
         return machineMapper.machineToMachineDto(machine);
     }
 
     @Override
     public MachineDto changeMachineStatus(ChangeMachineStatusDto changeMachineStatusDto) {
-
         Machine machine = findMachine(changeMachineStatusDto.getMachineId());
         machine.setStatus(changeMachineStatusDto.getStatus());
         machineRepository.save(machine);
