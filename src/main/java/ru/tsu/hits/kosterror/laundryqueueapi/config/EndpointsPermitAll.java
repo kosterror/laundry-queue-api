@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.Endpoint;
+import ru.tsu.hits.kosterror.laundryqueueapi.security.Endpoint;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;

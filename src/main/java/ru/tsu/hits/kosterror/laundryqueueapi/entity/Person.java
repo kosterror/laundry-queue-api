@@ -45,13 +45,13 @@ public class Person {
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status;
 
-    @OneToOne(mappedBy = "person")
+    @OneToOne(mappedBy = "person", fetch = FetchType.EAGER)
     private QueueSlot queueSlot;
 
     @OneToMany(mappedBy = "owner")
     private List<RefreshToken> refreshTokens;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<DeviceToken> deviceTokens;
 
     @ManyToOne

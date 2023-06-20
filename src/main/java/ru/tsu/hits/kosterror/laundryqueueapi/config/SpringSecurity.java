@@ -38,6 +38,7 @@ public class SpringSecurity {
                 .antMatchers(HttpMethod.POST, "/api/machines").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.DELETE, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)
                 .antMatchers(HttpMethod.PUT, "/api/machines/*").hasAnyRole(ADMIN, EMPLOYEE)
+                .antMatchers("/api/queue/**").authenticated()
                 .antMatchers("/api/money/**").authenticated()
                 .anyRequest().permitAll()
                 .and()

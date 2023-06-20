@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ApiError;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.ApiError;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.*;
 
 import javax.servlet.http.HttpServletRequest;

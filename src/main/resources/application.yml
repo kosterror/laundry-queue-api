@@ -10,7 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -50,4 +50,5 @@ security:
 application:
   name: laundry-queue-api
   queue-size: 5
+  price: 50
   firebase-configuration-file: firebase-config.json

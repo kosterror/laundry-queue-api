@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.NotificationType;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.notification.NotificationService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.NotificationService;
 
 @RestController
 @RequestMapping("/api/notifications")

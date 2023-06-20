@@ -7,12 +7,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StudentDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateAdminInfo;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.UpdateStudentInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateAdminInfo;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.account.AccountService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.AccountService;
 
 import javax.validation.Valid;
 
@@ -26,7 +26,7 @@ public class AccountController {
     private final ObjectMapper objectMapper;
 
     @Operation(
-            summary = "Получить данные о cебе(студент).",
+            summary = "Получить данные о себе (студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/student")
@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @Operation(
-            summary = "Получить данные о cебе(админ/сотрудник).",
+            summary = "Получить данные о себе (админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/admin")
@@ -47,7 +47,7 @@ public class AccountController {
 
 
     @Operation(
-            summary = "Изменить данные о себe(студент).",
+            summary = "Изменить данные о себе (студент).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/student")
@@ -57,7 +57,7 @@ public class AccountController {
     }
 
     @Operation(
-            summary = "Изменить данные о себe(админ/сотрудник).",
+            summary = "Изменить данные о себе (админ/сотрудник).",
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/admin")

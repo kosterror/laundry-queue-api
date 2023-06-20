@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateEmployeeDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.manageaccount.ManageAccountService;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.CreateEmployeeDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.ManageAccountService;
 
 import javax.validation.Valid;
 

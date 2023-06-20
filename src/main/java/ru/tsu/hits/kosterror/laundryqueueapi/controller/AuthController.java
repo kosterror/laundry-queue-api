@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.AuthDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.PersonCredentials;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.StringObject;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.StringObject;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.AuthDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.auth.AuthService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.AuthService;
 
 import javax.validation.Valid;
 

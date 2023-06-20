@@ -7,7 +7,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +14,6 @@ public interface MachineRepository extends JpaRepository<Machine, UUID> {
 
     List<Machine> findAllByStatus(MachineStatus status);
 
-    Optional<List<Machine>> findAllByLocation(Dormitory dormitoryId);
+    List<Machine> findAllByLocation(Dormitory dormitory);
 
 }

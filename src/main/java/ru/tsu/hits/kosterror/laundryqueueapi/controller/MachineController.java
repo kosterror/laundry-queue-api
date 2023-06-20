@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.ChangeMachineStatusDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.dto.MachineDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.managemachine.MachineService;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.machine.ChangeMachineStatusDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.machine.CreateNewMachineDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.dto.machine.MachineDto;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.MachineService;
 
 import javax.validation.Valid;
 import java.util.List;

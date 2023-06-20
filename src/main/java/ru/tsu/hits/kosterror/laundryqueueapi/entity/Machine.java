@@ -27,6 +27,8 @@ public class Machine {
     )
     private UUID id;
 
+    private String name;
+
     private LocalDateTime startTime;
 
     private String ip;
@@ -37,7 +39,7 @@ public class Machine {
     @Enumerated(value = EnumType.STRING)
     private MachineStatus status;
 
-    @OneToMany(mappedBy = "machine")
+    @OneToMany(mappedBy = "machine", fetch = FetchType.EAGER)
     private List<QueueSlot> queueSlots;
 
     @ManyToOne
