@@ -13,7 +13,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.StringObject;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.AuthDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonCredentials;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.auth.AuthService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.AuthService;
 
 import javax.validation.Valid;
 

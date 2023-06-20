@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.queue.QueueService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.QueueService;
 
 import java.util.List;
 import java.util.UUID;

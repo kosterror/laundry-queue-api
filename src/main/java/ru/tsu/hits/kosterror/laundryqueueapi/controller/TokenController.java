@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.DeviceTokenDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.token.TokenService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.TokenService;
 
 import javax.validation.Valid;
 

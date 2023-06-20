@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.dormitory.DormitoryDto;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.DormitoryService;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.PersonDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.money.MoneyService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.MoneyService;
 
 import java.math.BigDecimal;
 

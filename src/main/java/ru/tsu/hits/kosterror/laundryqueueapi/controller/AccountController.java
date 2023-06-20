@@ -12,7 +12,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateAdminInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.account.AccountService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.AccountService;
 
 import javax.validation.Valid;
 

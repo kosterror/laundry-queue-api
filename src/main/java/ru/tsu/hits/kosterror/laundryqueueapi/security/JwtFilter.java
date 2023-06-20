@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.tsu.hits.kosterror.laundryqueueapi.config.EndpointsPermitAll;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.api.ApiError;
-import ru.tsu.hits.kosterror.laundryqueueapi.service.jwt.JwtService;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.JwtService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
