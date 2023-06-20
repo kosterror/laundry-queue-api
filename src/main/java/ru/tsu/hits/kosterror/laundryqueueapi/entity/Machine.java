@@ -37,7 +37,7 @@ public class Machine {
     @Enumerated(value = EnumType.STRING)
     private MachineStatus status;
 
-    @OneToMany(mappedBy = "machine")
+    @OneToMany(mappedBy = "machine", fetch = FetchType.EAGER)
     private List<QueueSlot> queueSlots;
 
     @ManyToOne

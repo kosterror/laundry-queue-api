@@ -19,7 +19,7 @@ public class MachineMapper {
                 machine.getStartTime(),
                 machine.getType(),
                 machine.getStatus(),
-                machine.getQueueSlots().stream().sorted().map(queueMapper::entityToSlot).toList(),
+                machine.getQueueSlots().stream().map(queueMapper::entityToSlot).sorted().toList(),
                 machine.getLocation().getId()
         );
     }

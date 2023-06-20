@@ -28,6 +28,23 @@ public class NotificationServiceImpl implements NotificationService {
     private final PersonRepository personRepository;
 
     @Override
+    public void sendInfoNotification(Person person, String title, String body) {
+        log.info(
+                "Отправка пуш-уведомления пользователю с id {}. Заголовок: '{}' Тело: '{}'",
+                person.getId(),
+                title,
+                body
+        );
+        var notification = buildNotification(title, body);
+        var messages = buildMessages(
+                person,
+                notification,
+                Map.of(TYPE_KEY, NotificationType.INFO.toString())
+        );
+        sendMessages(messages);
+    }
+
+    @Override
     public void sendNotification(UUID personId, NotificationType type) {
         var person = personRepository
                 .findById(personId)

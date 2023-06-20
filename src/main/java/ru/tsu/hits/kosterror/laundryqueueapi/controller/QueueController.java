@@ -52,5 +52,14 @@ public class QueueController {
         );
     }
 
+    @Operation(
+            summary = "Выписаться из очереди",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DeleteMapping("/queue")
+    public List<QueueSlotDto> exitFromQueue(Authentication authentication){
+        return queueService.existFromQueue(((PersonData) authentication.getPrincipal()).getId());
+    }
+
 
 }

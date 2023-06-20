@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface NotificationService {
 
+    void sendInfoNotification(Person person, String title, String body);
+
     void sendNotification(UUID personId, NotificationType type);
 
     void sendLaundryFinished(Person person);

@@ -11,4 +11,6 @@ public interface QueueService {
     void startLaundry(UUID personId);
 
     List<QueueSlotDto> signUpForQueue(UUID personId, UUID slotId);
+
+    List<QueueSlotDto> existFromQueue(UUID personId);
 }

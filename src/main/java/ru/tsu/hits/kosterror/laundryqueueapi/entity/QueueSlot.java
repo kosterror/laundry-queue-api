@@ -2,8 +2,10 @@ package ru.tsu.hits.kosterror.laundryqueueapi.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QueueSlot implements Comparable {
+public class QueueSlot implements Comparable<QueueSlot> {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -25,24 +27,26 @@ public class QueueSlot implements Comparable {
 
     private Integer number;
 
-    @ManyToOne
+    private LocalDateTime statusChanged;
+
+    @Enumerated(value = EnumType.STRING)
+    private SlotStatus status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "machine_id")
     private Machine machine;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private Person person;
 
     @Override
-    public int compareTo(@NonNull Object object) {
-        if (object.getClass() != QueueSlot.class) {
-            throw new ClassCastException("Некорректный тип у сравниваемого объекта");
-        }
-        int oNumber = ((QueueSlot) object).getNumber();
+    public int compareTo(@NonNull QueueSlot object) {
+        int objectNumber = object.getNumber();
 
-        if (number < oNumber) {
+        if (number < objectNumber) {
             return -1;
-        } else if (number > oNumber) {
+        } else if (number > objectNumber) {
             return 1;
         }
 

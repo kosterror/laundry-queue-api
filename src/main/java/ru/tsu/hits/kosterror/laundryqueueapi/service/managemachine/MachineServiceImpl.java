@@ -10,12 +10,14 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.CreateNewMachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.MachineDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.QueueSlot;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.MachineMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.dormitory.DormitoryService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -55,7 +57,8 @@ public class MachineServiceImpl implements MachineService {
                     QueueSlot
                             .builder()
                             .machine(machine)
-                            .number(queueNumber + 1)
+                            .number(queueNumber)
+                            .status(SlotStatus.FREE)
                             .build()
             );
         }
@@ -66,10 +69,20 @@ public class MachineServiceImpl implements MachineService {
         return machineMapper.machineToMachineDto(machine);
     }
 
+    @Transactional
     @Override
     public MachineDto changeMachineStatus(ChangeMachineStatusDto changeMachineStatusDto) {
-        Machine machine = findMachine(changeMachineStatusDto.getMachineId());
+        var machine = findMachine(changeMachineStatusDto.getMachineId());
         machine.setStatus(changeMachineStatusDto.getStatus());
+        machine
+                .getQueueSlots()
+                .forEach(slot -> {
+                    slot.setPerson(null);
+                    slot.setStatusChanged(LocalDateTime.now());
+                    slot.setStatus(SlotStatus.FREE);
+                });
+
+        queueSlotRepository.saveAll(machine.getQueueSlots());
         machineRepository.save(machine);
         return machineMapper.machineToMachineDto(machine);
     }

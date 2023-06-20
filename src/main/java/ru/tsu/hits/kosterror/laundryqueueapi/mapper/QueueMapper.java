@@ -12,7 +12,7 @@ public class QueueMapper {
                 entity.getId(),
                 entity.getNumber(),
                 entity.getPerson() != null ? entity.getPerson().getId() : null,
-                entity.getPerson() != null
+                entity.getStatus()
         );
     }
 

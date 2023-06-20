@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.ConflictException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.InternalServerException;
@@ -19,6 +20,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.mapper.QueueMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
+import ru.tsu.hits.kosterror.laundryqueueapi.service.notification.NotificationService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,6 +43,7 @@ public class QueueServiceImpl implements QueueService {
     private final QueueSlotRepository queueSlotRepository;
     private final QueueMapper queueMapper;
     private final RestTemplate restTemplate;
+    private final NotificationService notificationService;
 
     @Override
     public List<QueueSlotDto> getQueueByMachine(UUID machineId) {
@@ -139,6 +142,8 @@ public class QueueServiceImpl implements QueueService {
         }
 
         slot.setPerson(person);
+        slot.setStatusChanged(LocalDateTime.now());
+        slot.setStatus(SlotStatus.BUSY);
         slot = queueSlotRepository.save(slot);
 
         return slot
@@ -147,6 +152,41 @@ public class QueueServiceImpl implements QueueService {
                 .stream()
                 .map(queueMapper::entityToSlot)
                 .toList();
+    }
+
+    @Transactional
+    @Override
+    public List<QueueSlotDto> existFromQueue(UUID personId) {
+        var person = personRepository
+                .findById(personId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id " + personId + " не найден"));
+
+        var queueSlot = person.getQueueSlot();
+
+        if (queueSlot == null) {
+            throw new ConflictException("Пользователь не находится в очереди");
+        }
+
+        queueSlot.setStatus(SlotStatus.FREE);
+        queueSlot.setStatusChanged(LocalDateTime.now());
+        queueSlot.setPerson(null);
+        queueSlot = queueSlotRepository.save(queueSlot);
+
+        var queue = queueSlot.getMachine().getQueueSlots().stream().sorted().toList();
+
+        for (int i = queueSlot.getNumber(); i < queue.size(); i++) {
+            var nextPerson = queue.get(i).getPerson();
+
+            if (nextPerson != null) {
+                notificationService.sendInfoNotification(
+                        person,
+                        "Очередь перед вами освободилась!",
+                        "Очередь в слоте " + queueSlot.getNumber() + " освободилась, скорее перезапишитесь!"
+                );
+            }
+        }
+
+        return queue.stream().map(queueMapper::entityToSlot).sorted().toList();
     }
 
     private void launchMachine(Machine machine) {
