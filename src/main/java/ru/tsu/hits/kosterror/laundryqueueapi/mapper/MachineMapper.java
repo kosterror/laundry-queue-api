@@ -31,6 +31,7 @@ public class MachineMapper {
                 .name(machineDto.getName())
                 .type(machineDto.getType())
                 .status(machineDto.getMachineStatus())
+                .ip(machineDto.getIp())
                 .location(dormitory)
                 .build();
     }

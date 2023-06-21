@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     private final DormitoryService dormitoryService;
 
     @Override
-    public StudentDto getStudentInfo(UUID id){
+    public StudentDto getStudentInfo(UUID id) {
 
         return personMapper.entityToStudentDto(findPerson(id));
     }
@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public PersonDto changeAdminInfo(UUID id, UpdateAdminInfo updateAdminInfo) {
-       Person person = findPerson(id);
+        Person person = findPerson(id);
 
         person.setEmail(updateAdminInfo.getEmail());
         person.setName(updateAdminInfo.getName());
@@ -59,13 +59,16 @@ public class AccountServiceImpl implements AccountService {
         person.setSurname(updateStudentInfo.getSurname());
         person.setRoom(updateStudentInfo.getRoom());
         person.setDormitory(dormitoryService.findDormitory(updateStudentInfo.getDormitoryId()));
-        person.setStatus(AccountStatus.ACTIVATED);
+        if (person.getStatus() == AccountStatus.PENDING) {
+            log.info("Происходит активация аккаунта студента {}", id);
+            person.setStatus(AccountStatus.ACTIVATED);
+        }
         personRepository.save(person);
         return personMapper.entityToStudentDto(person);
     }
 
-    private Person findPerson(UUID id){
-       return personRepository
+    private Person findPerson(UUID id) {
+        return personRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
