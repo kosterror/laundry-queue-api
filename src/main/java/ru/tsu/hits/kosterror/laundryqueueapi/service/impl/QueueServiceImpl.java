@@ -54,6 +54,7 @@ public class QueueServiceImpl implements QueueService {
                 .findById(machineId)
                 .orElseThrow(() -> new NotFoundException(String.format("Машина с id %s не найден", machineId)));
 
+        log.info("Размер очереди {}", machine.getQueueSlots().size());
         var slots = machine.getQueueSlots().stream().distinct().toList();
 
         if (slots.size() != queueSize) {
@@ -147,7 +148,8 @@ public class QueueServiceImpl implements QueueService {
             throw new BadRequestException("Машина не работает, очередь недоступна");
         }
 
-        var slots = slot.getMachine().getQueueSlots().stream().sorted().toList();
+        log.info("Размер очереди: {}", slot.getMachine().getQueueSlots().size());
+        var slots = slot.getMachine().getQueueSlots().stream().distinct().sorted().toList();
 
         int indexLastBusySlot = -1;
         for (int i = 0; i < queueSize; i++) {
@@ -199,14 +201,20 @@ public class QueueServiceImpl implements QueueService {
         queueSlot.setPerson(null);
         queueSlot = queueSlotRepository.save(queueSlot);
 
-        var queue = queueSlot.getMachine().getQueueSlots().stream().sorted().toList();
+
+        var machine = machineRepository
+                .findById(queueSlot.getMachine().getId())
+                .orElseThrow(() -> new NotFoundException("Машина не найдена"));
+        log.info("Размер очереди {}", machine.getQueueSlots().size());
+        var queue = machine.getQueueSlots().stream().distinct().sorted().toList();
 
         for (int i = queueSlot.getNumber(); i < queue.size(); i++) {
             var nextPerson = queue.get(i).getPerson();
+            log.info("index: {}, personId : {}", i, nextPerson == null ? null : nextPerson.getId());
 
             if (nextPerson != null) {
                 notificationService.sendNotification(
-                        person,
+                        nextPerson.getId(),
                         "Очередь перед вами освободилась!",
                         "Очередь в слоте " + queueSlot.getNumber() + " освободилась, скорее перезапишитесь!"
                 );

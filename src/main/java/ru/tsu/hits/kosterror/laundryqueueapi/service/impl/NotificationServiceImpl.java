@@ -25,8 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final FirebaseMessaging firebaseMessaging;
     private final PersonRepository personRepository;
 
-    @Override
-    public void sendNotification(Person person, String title, String body) {
+    private void sendNotification(Person person, String title, String body) {
         log.info("Отправка уведомления пользователю с id {}. title {} body {}", person.getId(), title, body);
         var notification = buildNotification(title, body);
         var messages = buildMessages(person, notification);
@@ -61,6 +60,8 @@ public class NotificationServiceImpl implements NotificationService {
                                 .setToken(deviceToken.getToken())
                                 .build()
                 );
+                log.info("Создалось сообщение для отправки уведомления по токену {} пользователю {}",
+                        deviceToken.getToken(), person.getId());
             } else {
                 log.warn(
                         "Токен девайса c id {} у пользователя с id {} равен null",

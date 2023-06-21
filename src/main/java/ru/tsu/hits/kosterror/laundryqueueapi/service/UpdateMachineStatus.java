@@ -54,7 +54,7 @@ public class UpdateMachineStatus {
                     queueSlotRepository.saveAll(machine.getQueueSlots());
                 }
             } catch (RestClientException e) {
-                log.error("Ошибка во время интеграционного запроса для обновления статуса машины");
+                log.error("Ошибка во время интеграционного запроса для обновления статуса машины", e);
             }
         }
 
@@ -131,7 +131,7 @@ public class UpdateMachineStatus {
             var currentPerson = queue.get(i).getPerson();
             if (currentPerson != null) {
                 try {
-                    notificationService.sendNotification(currentPerson, YOU_CAN_BE_NEXT_TITLE, YOU_CAN_BE_NEXT_BODY);
+                    notificationService.sendNotification(currentPerson.getId(), YOU_CAN_BE_NEXT_TITLE, YOU_CAN_BE_NEXT_BODY);
                 } catch (Exception e) {
                     log.error("Ошибка во время отправка уведомления о том, что" +
                             " слот перед человеком освободился", e);
@@ -173,7 +173,7 @@ public class UpdateMachineStatus {
             log.warn("Машина закончила работу, но первый слот в очереди пустой");
         } else {
             try {
-                notificationService.sendNotification(currentPerson, LAUNDRY_FINISHED_TITLE, LAUNDRY_FINISHED_BODY);
+                notificationService.sendNotification(currentPerson.getId(), LAUNDRY_FINISHED_TITLE, LAUNDRY_FINISHED_BODY);
             } catch (Exception e) {
                 log.error(
                         "Ошибка во время отправки уведомления об окончании работы машины пользователю {}",
@@ -185,7 +185,7 @@ public class UpdateMachineStatus {
 
         if (nextPerson != null) {
             try {
-                notificationService.sendNotification(nextPerson, YOU_NEXT_TITLE, YOU_NEXT_BODY);
+                notificationService.sendNotification(nextPerson.getId(), YOU_NEXT_TITLE, YOU_NEXT_BODY);
             } catch (Exception e) {
                 log.error("Ошибка во время отправки уведомления о том, что пользователь {} следующий в очереди",
                         nextPerson.getId(), e);
