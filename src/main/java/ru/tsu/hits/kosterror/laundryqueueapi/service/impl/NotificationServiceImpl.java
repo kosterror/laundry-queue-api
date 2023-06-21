@@ -164,10 +164,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private void sendMessages(List<Message> messages) {
-        try {
-            messages.forEach(this::sendMessage);
-        } catch (InternalServerException e) {
-            log.error("Не удалось отправить уведомление пользователю", e);
+        for (var message : messages) {
+            try {
+                sendMessage(message);
+            } catch (InternalServerException e) {
+                log.error("Не удалось отправить уведомление пользователю", e);
+            }
         }
     }
 

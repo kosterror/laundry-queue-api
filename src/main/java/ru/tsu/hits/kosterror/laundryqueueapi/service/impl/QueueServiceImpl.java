@@ -74,13 +74,13 @@ public class QueueServiceImpl implements QueueService {
         var slot = person.getQueueSlot();
 
         if (slot == null || slot.getNumber() != 1) {
-            throw new BadRequestException("Пользователь не записан в очередь или находится не в первом слоте");
+            throw new BadRequestException("Вы не находитесь в начале очереди");
         }
 
         var machine = slot.getMachine();
 
         if (machine.getStatus() != MachineStatus.READY_TO_WORK) {
-            throw new BadRequestException("Машина не готова к стирке, скорее всего она уже работает");
+            throw new BadRequestException("Машина не готова к запуску");
         }
 
         BigDecimal money = person.getMoney();
@@ -107,7 +107,7 @@ public class QueueServiceImpl implements QueueService {
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
         if (person.getQueueSlot() != null) {
-            throw new BadRequestException("Пользователь уже записан в очередь");
+            throw new BadRequestException("Вы уже находитесь в очереди");
         }
 
         if (person.getMoney().compareTo(price) < 0) {
@@ -116,7 +116,7 @@ public class QueueServiceImpl implements QueueService {
 
         var slot = queueSlotRepository
                 .findById(slotId)
-                .orElseThrow(() -> new NotFoundException("Слот с таким id не найден"));
+                .orElseThrow(() -> new NotFoundException("Такой слот не найден"));
 
         if (slot.getPerson() != null) {
             throw new ConflictException("Слот занят");
@@ -152,6 +152,7 @@ public class QueueServiceImpl implements QueueService {
                 .getQueueSlots()
                 .stream()
                 .map(queueMapper::entityToSlot)
+                .sorted()
                 .toList();
     }
 

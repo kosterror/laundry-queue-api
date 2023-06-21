@@ -20,6 +20,7 @@ public class PersonMapper {
                 entity.getSurname(),
                 entity.getRoom(),
                 entity.getMoney(),
+                entity.getStatus(),
                 entity.getRole()
         );
     }
@@ -31,7 +32,8 @@ public class PersonMapper {
                 entity.getSurname(),
                 entity.getMoney(),
                 entity.getRole(),
-                entity.getDormitory() != null ? entity.getDormitory().getId() : null
+                entity.getDormitory() != null ? entity.getDormitory().getId() : null,
+                entity.getStatus()
         );
     }
 
