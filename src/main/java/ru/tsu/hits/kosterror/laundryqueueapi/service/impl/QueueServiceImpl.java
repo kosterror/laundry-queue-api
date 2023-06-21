@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Machine;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.Role;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.BadRequestException;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.ConflictException;
@@ -89,9 +90,24 @@ public class QueueServiceImpl implements QueueService {
             throw new BadRequestException("У вас недостаточно средств");
         }
 
+        var director = machine
+                .getLocation()
+                .getPerson()
+                .stream()
+                .filter(el -> el.getRole() == Role.ROLE_ADMIN)
+                .findFirst()
+                .orElse(null);
+
         person.setMoney(money.subtract(price));
         machine.setStatus(MachineStatus.WORKING);
         machine.setStartTime(LocalDateTime.now());
+
+        if (director == null) {
+            log.warn("У общежития {} нет директора", machine.getLocation().getId());
+        } else {
+            director.setMoney(director.getMoney().add(price));
+            personRepository.save(director);
+        }
 
         launchMachine(machine);
 
