@@ -17,7 +17,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -34,15 +33,13 @@ public class UpdateMachineStatus {
     @Value("${application.queue-size}")
     private int queueSize;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
     private final MachineRepository machineRepository;
     private final QueueSlotRepository queueSlotRepository;
     private final NotificationService notificationService;
     private final RestTemplate restTemplate;
-    private final QueueService queueService;
 
     @Transactional
-    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 15)
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 5)
     public void updateMachinesStatus() {
         List<Machine> workingMachines = machineRepository.findAllByStatus(MachineStatus.WORKING);
 
@@ -62,7 +59,7 @@ public class UpdateMachineStatus {
     }
 
     @Transactional
-    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 15)
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 5)
     public void updateIdleMachines() {
         List<Machine> machines = machineRepository.findAllByStatus(MachineStatus.READY_TO_WORK);
 
