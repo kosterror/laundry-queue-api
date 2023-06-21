@@ -14,6 +14,6 @@ public interface MachineRepository extends JpaRepository<Machine, UUID> {
 
     List<Machine> findAllByStatus(MachineStatus status);
 
-    List<Machine> findAllByLocation(Dormitory dormitory);
+    List<Machine> findAllByLocationOrderByNameAsc(Dormitory dormitory);
 
 }
