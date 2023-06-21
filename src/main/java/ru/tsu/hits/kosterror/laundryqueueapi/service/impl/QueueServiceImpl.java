@@ -125,27 +125,27 @@ public class QueueServiceImpl implements QueueService {
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
         if (person.getQueueSlot() != null) {
-            throw new BadRequestException("Вы уже находитесь в очереди");
+            throw new BadRequestException("Ты уже есть в какой-то очереди!");
         }
 
         if (person.getMoney().compareTo(price) < 0) {
-            throw new BadRequestException("У вас недостаточно средств");
+            throw new BadRequestException("У тебя недостаточно средств!");
         }
 
         var slot = queueSlotRepository
                 .findById(slotId)
-                .orElseThrow(() -> new NotFoundException("Такой слот не найден"));
+                .orElseThrow(() -> new NotFoundException("Я не смог найти такой слот!"));
 
         if (slot.getPerson() != null) {
-            throw new ConflictException("Слот занят");
+            throw new ConflictException("Слот уже занят!");
         }
 
         if (slot.getStatus() == SlotStatus.BLOCKED) {
-            throw new BadRequestException("Нельзя записаться в заблокированный слот!");
+            throw new BadRequestException("Слот заблокирован для записи!");
         }
 
         if (slot.getMachine().getStatus() == MachineStatus.UNAVAILABLE) {
-            throw new BadRequestException("Машина не работает, очередь недоступна");
+            throw new BadRequestException("Машина не работает!");
         }
 
         log.info("Размер очереди: {}", slot.getMachine().getQueueSlots().size());
@@ -160,12 +160,11 @@ public class QueueServiceImpl implements QueueService {
 
         if (indexLastBusySlot != -1) {
             if (slot.getNumber() - 1 > indexLastBusySlot + 1) {
-                throw new BadRequestException("В очередь можно записываться сразу после последнего человека, или " +
-                        "в окна перед ним. Нельзя при записи создавать новые окна в очереди");
+                throw new BadRequestException("При записи в очередь нельзя образовывать новые окна!");
             }
         } else {
             if (slot.getNumber() != 1) {
-                throw new BadRequestException("Если очередь пустая, то можно записаться только в начало");
+                throw new BadRequestException("В пустой очереди можно записаться только в самое начало!");
             }
         }
 
@@ -188,12 +187,12 @@ public class QueueServiceImpl implements QueueService {
     public List<QueueSlotDto> existFromQueue(UUID personId) {
         var person = personRepository
                 .findById(personId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id " + personId + " не найден"));
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
         var queueSlot = person.getQueueSlot();
 
         if (queueSlot == null) {
-            throw new ConflictException("Пользователь не находится в очереди");
+            throw new ConflictException("Ты не записан в очередь!");
         }
 
         queueSlot.setStatus(SlotStatus.FREE);
@@ -204,7 +203,7 @@ public class QueueServiceImpl implements QueueService {
 
         var machine = machineRepository
                 .findById(queueSlot.getMachine().getId())
-                .orElseThrow(() -> new NotFoundException("Машина не найдена"));
+                .orElseThrow(() -> new NotFoundException("Я не смог найти такую машину!"));
         log.info("Размер очереди {}", machine.getQueueSlots().size());
         var queue = machine.getQueueSlots().stream().distinct().sorted().toList();
 
@@ -235,7 +234,7 @@ public class QueueServiceImpl implements QueueService {
             log.info("Ответ на запуск машины: {}", response);
         } catch (HttpClientErrorException.Conflict e) {
             log.error("Ошибка во время запуска стиральной машины", e);
-            throw new BadRequestException("Проверьте закрыта ли дверь и попробуйте еще раз");
+            throw new BadRequestException("Закрой дверь!", e);
         } catch (RestClientException e) {
             throw new InternalServerException("Ошибка во время запуска машины", e);
         }
