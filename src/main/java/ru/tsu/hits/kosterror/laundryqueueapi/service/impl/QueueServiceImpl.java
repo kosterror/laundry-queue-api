@@ -47,13 +47,14 @@ public class QueueServiceImpl implements QueueService {
     private final RestTemplate restTemplate;
     private final NotificationService notificationService;
 
+    @Transactional(readOnly = true)
     @Override
     public List<QueueSlotDto> getQueueByMachine(UUID machineId) {
         var machine = machineRepository
                 .findById(machineId)
                 .orElseThrow(() -> new NotFoundException(String.format("Машина с id %s не найден", machineId)));
 
-        var slots = machine.getQueueSlots();
+        var slots = machine.getQueueSlots().stream().distinct().toList();
 
         if (slots.size() != queueSize) {
             throw new InternalServerException(String.format("Нарушена целостность данных, у машины %s очередь " +
@@ -136,6 +137,14 @@ public class QueueServiceImpl implements QueueService {
 
         if (slot.getPerson() != null) {
             throw new ConflictException("Слот занят");
+        }
+
+        if (slot.getStatus() == SlotStatus.BLOCKED) {
+            throw new BadRequestException("Нельзя записаться в заблокированный слот!");
+        }
+
+        if (slot.getMachine().getStatus() == MachineStatus.UNAVAILABLE) {
+            throw new BadRequestException("Машина не работает, очередь недоступна");
         }
 
         var slots = slot.getMachine().getQueueSlots().stream().sorted().toList();
