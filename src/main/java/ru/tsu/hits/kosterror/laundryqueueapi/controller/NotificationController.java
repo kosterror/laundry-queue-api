@@ -1,6 +1,5 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.controller;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.NotificationType;
 import ru.tsu.hits.kosterror.laundryqueueapi.security.PersonData;
 import ru.tsu.hits.kosterror.laundryqueueapi.service.NotificationService;
 
@@ -20,7 +18,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.service.NotificationService;
 @Tag(name = "Уведомления")
 public class NotificationController {
 
-    private final FirebaseMessaging firebaseMessaging;
     private final NotificationService notificationService;
 
     @Operation(
@@ -29,9 +26,10 @@ public class NotificationController {
     )
     @PostMapping("/send")
     public void sendNotification(Authentication auth,
-                                 @RequestParam NotificationType type
+                                 @RequestParam String title,
+                                 @RequestParam String body
     ) {
-        notificationService.sendNotification(((PersonData) auth.getPrincipal()).getId(), type);
+        notificationService.sendNotification(((PersonData) auth.getPrincipal()).getId(), title, body);
     }
 
 }

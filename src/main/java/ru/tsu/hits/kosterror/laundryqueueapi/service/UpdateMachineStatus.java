@@ -17,12 +17,12 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.MachineRepository;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.QueueSlotRepository;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static ru.tsu.hits.kosterror.laundryqueueapi.util.NotificationConstants.*;
 import static ru.tsu.hits.kosterror.laundryqueueapi.util.QueueConstants.*;
 
 @Slf4j
@@ -33,15 +33,13 @@ public class UpdateMachineStatus {
     @Value("${application.queue-size}")
     private int queueSize;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
     private final MachineRepository machineRepository;
     private final QueueSlotRepository queueSlotRepository;
     private final NotificationService notificationService;
     private final RestTemplate restTemplate;
-    private final QueueService queueService;
 
     @Transactional
-    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 15)
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 5)
     public void updateMachinesStatus() {
         List<Machine> workingMachines = machineRepository.findAllByStatus(MachineStatus.WORKING);
 
@@ -53,7 +51,7 @@ public class UpdateMachineStatus {
                     queueSlotRepository.saveAll(machine.getQueueSlots());
                 }
             } catch (RestClientException e) {
-                log.error("Ошибка во время интеграционного запроса для обновления статуса машины");
+                log.error("Ошибка во время интеграционного запроса для обновления статуса машины", e);
             }
         }
 
@@ -61,7 +59,7 @@ public class UpdateMachineStatus {
     }
 
     @Transactional
-    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 15)
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 5)
     public void updateIdleMachines() {
         List<Machine> machines = machineRepository.findAllByStatus(MachineStatus.READY_TO_WORK);
 
@@ -130,12 +128,7 @@ public class UpdateMachineStatus {
             var currentPerson = queue.get(i).getPerson();
             if (currentPerson != null) {
                 try {
-                    notificationService.sendInfoNotification(
-                            currentPerson,
-                            "Слот перед вами освободился!",
-                            "В очереди перед вами освободился слот, у вас есть шанс воспользоваться" +
-                                    " услугами раньше."
-                    );
+                    notificationService.sendNotification(currentPerson.getId(), YOU_CAN_BE_NEXT_TITLE, YOU_CAN_BE_NEXT_BODY);
                 } catch (Exception e) {
                     log.error("Ошибка во время отправка уведомления о том, что" +
                             " слот перед человеком освободился", e);
@@ -177,7 +170,7 @@ public class UpdateMachineStatus {
             log.warn("Машина закончила работу, но первый слот в очереди пустой");
         } else {
             try {
-                notificationService.sendLaundryFinished(currentPerson);
+                notificationService.sendNotification(currentPerson.getId(), LAUNDRY_FINISHED_TITLE, LAUNDRY_FINISHED_BODY);
             } catch (Exception e) {
                 log.error(
                         "Ошибка во время отправки уведомления об окончании работы машины пользователю {}",
@@ -189,10 +182,7 @@ public class UpdateMachineStatus {
 
         if (nextPerson != null) {
             try {
-                notificationService.sendInfoNotification(nextPerson, "Скорее загружайте вещи!", "У " +
-                        "вас есть 5 минут, чтобы загрузить вещи в машину. Если вы не уложитесь в " +
-                        "эти 5 минут, то вас исключат из очереди!"
-                );
+                notificationService.sendNotification(nextPerson.getId(), YOU_NEXT_TITLE, YOU_NEXT_BODY);
             } catch (Exception e) {
                 log.error("Ошибка во время отправки уведомления о том, что пользователь {} следующий в очереди",
                         nextPerson.getId(), e);

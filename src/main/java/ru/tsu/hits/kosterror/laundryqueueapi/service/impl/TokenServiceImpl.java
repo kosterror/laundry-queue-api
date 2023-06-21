@@ -29,6 +29,10 @@ public class TokenServiceImpl implements TokenService {
                 .findById(personId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id = %s не найден", personId)));
 
+        var tokenVal = deviceTokenDto.getToken();
+        var sameTokens = deviceTokenRepository.findAllByToken(tokenVal);
+        deviceTokenRepository.deleteAll(sameTokens);
+
         var deviceToken = DeviceToken
                 .builder()
                 .createdDate(LocalDateTime.now())

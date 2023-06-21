@@ -6,6 +6,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.SlotStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -51,6 +52,21 @@ public class QueueSlot implements Comparable<QueueSlot> {
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        QueueSlot queueSlot = (QueueSlot) o;
+
+        return Objects.equals(id, queueSlot.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
 }

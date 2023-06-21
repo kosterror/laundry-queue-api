@@ -38,9 +38,9 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public List<MachineDto> getMachines(UUID dormitoryId) {
-        List<Machine> machines = dormitoryService.findDormitory(dormitoryId).getMachines();
-
-        return machines
+        var dormitory = dormitoryService.findDormitory(dormitoryId);
+        return machineRepository
+                .findAllByLocationOrderByNameAsc(dormitory)
                 .stream()
                 .map(machineMapper::machineToMachineDto)
                 .toList();
