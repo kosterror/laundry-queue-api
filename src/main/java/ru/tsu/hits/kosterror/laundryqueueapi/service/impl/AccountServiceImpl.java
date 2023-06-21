@@ -8,6 +8,7 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.StudentDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateAdminInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.dto.person.UpdateStudentInfo;
 import ru.tsu.hits.kosterror.laundryqueueapi.entity.Person;
+import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.AccountStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.exception.NotFoundException;
 import ru.tsu.hits.kosterror.laundryqueueapi.mapper.PersonMapper;
 import ru.tsu.hits.kosterror.laundryqueueapi.repository.PersonRepository;
@@ -58,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
         person.setSurname(updateStudentInfo.getSurname());
         person.setRoom(updateStudentInfo.getRoom());
         person.setDormitory(dormitoryService.findDormitory(updateStudentInfo.getDormitoryId()));
-
+        person.setStatus(AccountStatus.ACTIVATED);
         personRepository.save(person);
         return personMapper.entityToStudentDto(person);
     }
