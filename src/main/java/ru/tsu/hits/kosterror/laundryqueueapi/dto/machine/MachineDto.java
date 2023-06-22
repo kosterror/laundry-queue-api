@@ -1,6 +1,5 @@
 package ru.tsu.hits.kosterror.laundryqueueapi.dto.machine;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import ru.tsu.hits.kosterror.laundryqueueapi.dto.queue.QueueSlotDto;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineStatus;
 import ru.tsu.hits.kosterror.laundryqueueapi.enumeration.MachineType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +19,7 @@ public class MachineDto {
 
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss:SSS")
-    private LocalDateTime startTime;
+    private String startTime;
 
     private MachineType type;
 

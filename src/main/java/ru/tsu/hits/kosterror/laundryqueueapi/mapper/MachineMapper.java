@@ -17,7 +17,7 @@ public class MachineMapper {
         return new MachineDto(
                 machine.getId(),
                 machine.getName(),
-                machine.getStartTime(),
+                machine.getStartTime() != null ? machine.getStartTime().toString() : null,
                 machine.getType(),
                 machine.getStatus(),
                 machine.getQueueSlots().stream().map(queueMapper::entityToSlot).sorted().toList(),

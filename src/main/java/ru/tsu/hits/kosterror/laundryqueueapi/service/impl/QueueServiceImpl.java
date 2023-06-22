@@ -171,6 +171,7 @@ public class QueueServiceImpl implements QueueService {
 
         queueSlot.setStatus(SlotStatus.FREE);
         queueSlot.setStatusChanged(LocalDateTime.now());
+        var removedPerson = queueSlot.getPerson();
         queueSlot.setPerson(null);
         queueSlot = queueSlotRepository.save(queueSlot);
 
@@ -179,7 +180,7 @@ public class QueueServiceImpl implements QueueService {
         for (int i = queueSlot.getNumber(); i < queue.size(); i++) {
             var nextPerson = queue.get(i).getPerson();
 
-            if (nextPerson != null) {
+            if (nextPerson != null && !nextPerson.equals(removedPerson)) {
                 notificationService.sendInfoNotification(
                         person,
                         "Очередь перед вами освободилась!",
